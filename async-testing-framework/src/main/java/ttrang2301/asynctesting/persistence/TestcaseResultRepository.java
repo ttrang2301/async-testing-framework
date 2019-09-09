@@ -7,11 +7,9 @@ package ttrang2301.asynctesting.persistence;
 
 import java.util.List;
 
-import ttrang2301.asynctesting.model.CompletionPoint;
+public interface TestcaseResultRepository {
 
-public interface TestcaseRepository {
+    void insertTestcaseResults(List<TestcaseResult> initialTestcaseResults);
 
-    void insertTestcase(String campaignId, String testcaseId,
-                        List<CompletionPoint> completionPoints, Testcase.Status status);
-
+    void updateStatus(String campaignId, String testcaseId, TestcaseResult.Status toPersistedModel);
 }

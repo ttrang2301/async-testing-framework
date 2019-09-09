@@ -14,9 +14,7 @@ import lombok.Data;
 @AllArgsConstructor
 public class Expectation {
 
-    private String eventName;
-    private Class testingClass;
-    private String testId;
+    private Method method;
 //    private CompletionPoint completionPoint;
 //
 //    public Expectation(String eventName, String testId, AssertingMethod assertingMethod, CompletionPoint completionPoint) {
