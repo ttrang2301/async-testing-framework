@@ -1,4 +1,4 @@
-package ttrang2301.asynctesting.test.case1;
+package ttrang2301.asynctesting.sample.case1;
 
 import ttrang2301.asynctesting.annotation.AsyncTest;
 import ttrang2301.asynctesting.annotation.Expectation;
@@ -11,13 +11,14 @@ public class TestCase1 {
     // Executed | Waiting | Done | Timeout
 
     @Precondition
-    public void createCreateStudentRequest() {
+    public void createCreateStudentRequest3() {
         // TODO
         // sendCreateStudentRequest(new CreateStudentRequest("A", "Male"));
+        System.out.println("Public Preconsitions initialized");
     }
 
-    @Expectation
-    public void assertStudentCreatedEvent() {
+    @Expectation(eventName = "")
+    public void assertStudentCreatedEvent(Object e) {
 //  public void assertStudentCreatedEvent(StudentCreatedEvent eventName) {
         // assertThat(eventName.student.name == "A");
         // assertThat(eventName.student.gender == "Male");

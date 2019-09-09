@@ -19,6 +19,11 @@ public class TestcaseResult {
     private List<CompletionPoint> completionPoints;
     private Status status;
 
+    public static final ttrang2301.asynctesting.persistence.TestcaseResult toPersistedModel(TestcaseResult model) {
+        // TODO
+        return null;
+    }
+
     public enum  Status {
         INITIALIZED("Initialized"), PRECONDITIONS_READY("Ready"), SUCCESSFUL("Successful"), FAILED("Failed");
 
@@ -26,6 +31,11 @@ public class TestcaseResult {
 
         Status(String value) {
             this.value = value;
+        }
+
+        public static ttrang2301.asynctesting.persistence.TestcaseResult.Status toPersistedModel(Status preconditionsReady) {
+            // TODO
+            return null;
         }
 
         public String getValue() {

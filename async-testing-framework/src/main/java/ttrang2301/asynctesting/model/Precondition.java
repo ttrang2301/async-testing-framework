@@ -8,10 +8,12 @@ package ttrang2301.asynctesting.model;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.lang.reflect.Method;
+
 @Data
 @AllArgsConstructor
 public class Precondition {
 
-
+    private Method method;
 
 }

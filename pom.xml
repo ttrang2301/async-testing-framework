@@ -23,7 +23,7 @@
 
     <modules>
         <module>async-testing-framework</module>
-        <module>async-testing-framework-test</module>
+        <module>async-testing-framework-sample</module>
     </modules>
 
     <build>

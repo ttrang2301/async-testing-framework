@@ -3,7 +3,9 @@ package ttrang2301.asynctesting;
 import org.apache.commons.collections.CollectionUtils;
 import org.reflections.Reflections;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.lang.reflect.Parameter;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -20,37 +22,36 @@ import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 import ttrang2301.asynctesting.annotation.AsyncTest;
-import ttrang2301.asynctesting.model.Campaign;
-import ttrang2301.asynctesting.model.CompletionPoint;
-import ttrang2301.asynctesting.model.Expectation;
-import ttrang2301.asynctesting.model.InvalidMetadataException;
-import ttrang2301.asynctesting.model.Precondition;
-import ttrang2301.asynctesting.model.TestcaseResult;
-import ttrang2301.asynctesting.persistence.TestcaseRepository;
+import ttrang2301.asynctesting.model.*;
+import ttrang2301.asynctesting.persistence.EventConsumerRepository;
+import ttrang2301.asynctesting.persistence.TestcaseResultRepository;
 
 @Slf4j
 public class AsyncTestingApplication {
 
     private Campaign campaign;
-    private List<String> eventNames;
-    private List<Precondition> preconditions;
-    private List<Expectation> expectations;
+    private Set<String> eventNames;
+    private Map<String, List<Precondition>> preconditionsByTestcase;
+    private List<EventConsumer> eventConsumers;
     private List<TestcaseResult> initialTestcaseResults;
 
-    private TestcaseRepository repository;
+    private TestcaseResultRepository testcaseResultRepository;
+    private EventConsumerRepository eventConsumerRepository;
 
     public AsyncTestingApplication(Set<Class<?>> testingClasses,
-                                   TestcaseRepository repository) {
+                                   TestcaseResultRepository testcaseResultRepository,
+                                   EventConsumerRepository eventConsumerRepository) {
         validateTestcaseIdDuplication(testingClasses);
 
         this.campaign = new Campaign(UUID.randomUUID().toString(),
                 "Testing campaign running at " + ZonedDateTime.now(ZoneOffset.UTC));
-        this.preconditions = extractPreconditions(testingClasses);
-        this.expectations = extractExpectations(testingClasses);
-        this.eventNames = extractNamesOfObservedEvents(expectations);
+        this.preconditionsByTestcase = extractPreconditionsByTestcases(testingClasses);
+        this.eventConsumers = extractExpectations(testingClasses);
+        this.eventNames = extractNamesOfObservedEvents(eventConsumers);
         this.initialTestcaseResults = extractInitialTestcaseResults(this.campaign, testingClasses);
 
-        this.repository = repository;
+        this.testcaseResultRepository = testcaseResultRepository;
+        this.eventConsumerRepository = eventConsumerRepository;
     }
 
     public static void run(Class<?> mainClass, String[] args) {
@@ -62,19 +63,54 @@ public class AsyncTestingApplication {
         AsyncTestingApplication application = new AsyncTestingApplication(
                 testingClasses,
                 // TODO
-                null);
+                null, null);
         application.initializeTestcaseResultDatabase();
         application.createPreconditions();
         application.waitForExpectations();
     }
 
     private void initializeTestcaseResultDatabase() {
-        // TODO
-//        repository.insertTestcase(this.campaign.getId());
+        testcaseResultRepository.insertTestcaseResults(
+                this.initialTestcaseResults.stream().map(TestcaseResult::toPersistedModel).collect(Collectors.toList()     ));
+        eventConsumerRepository.insertEventConsumers(
+                this.eventConsumers.stream().map(EventConsumer::toPersistedModel).collect(Collectors.toList()));
     }
 
     private void createPreconditions() {
-        // TODO
+        for (Map.Entry<String, List<Precondition>> testcasePreconditions : this.preconditionsByTestcase.entrySet()) {
+            for (Precondition precondition : testcasePreconditions.getValue()) {
+                Object testingObject = null;
+                try {
+                    testingObject = precondition.getMethod().getDeclaringClass().newInstance();
+                } catch (InstantiationException e) {
+                    throw new RuntimeException("Cannot construct instance of " + precondition.getMethod().getDeclaringClass(), e);
+                } catch (IllegalAccessException e) {
+                    // This must not happen because it should be validated when extracting metadata from source code.
+                    // TODO validate
+                    throw new RuntimeException(
+                            "Cannot construct instance of " + precondition.getMethod().getDeclaringClass()
+                            + " because there is no public no-argument constructor",
+                            e);
+                }
+                try {
+                    precondition.getMethod().invoke(testingObject);
+                } catch (InvocationTargetException e) {
+                    // TODO
+                    e.printStackTrace();
+                } catch (IllegalAccessException e) {
+                    // This must not happen because it should be validated when extracting metadata from source code.
+                    throw new RuntimeException("Cannot invoke precondition "
+                            + precondition.getMethod().getDeclaringClass().getName() + "#"
+                            + precondition.getMethod().getName()
+                            + "(" + Arrays.stream(precondition.getMethod().getParameterTypes()).map(Class::getName).collect(Collectors.joining(",")) + ")" ,
+                            e);
+                }
+            }
+            testcaseResultRepository.updateStatus(
+                    this.campaign.getId(),
+                    testcasePreconditions.getKey(),
+                    TestcaseResult.Status.toPersistedModel(TestcaseResult.Status.PRECONDITIONS_READY));
+        }
     }
 
     private void waitForExpectations() {
@@ -99,39 +135,82 @@ public class AsyncTestingApplication {
         return classes;
     }
 
-    private static List<String> extractNamesOfObservedEvents(List<Expectation> expectations) {
-        if (CollectionUtils.isEmpty(expectations)) {
-            return Collections.emptyList();
+    private static Set<String> extractNamesOfObservedEvents(List<EventConsumer> eventConsumers) {
+        if (CollectionUtils.isEmpty(eventConsumers)) {
+            return Collections.emptySet();
         }
-        return new ArrayList<>(expectations.stream()
-                .map(Expectation::getEventName)
-                .collect(Collectors.toSet()));
+        return eventConsumers.stream()
+                .map(eventConsumer -> eventConsumer
+                        .getExpectation()
+                        .getMethod()
+                        .getAnnotation(ttrang2301.asynctesting.annotation.Expectation.class)
+                        .eventName())
+                .collect(Collectors.toSet());
     }
 
-    private static List<Precondition> extractPreconditions(Set<Class<?>> classes) {
-        List<Method> preconditionMethods =
-                classes.stream().map(clazz -> Arrays.stream(clazz.getMethods())
+    private static Map<String, List<Precondition>> extractPreconditionsByTestcases(Set<Class<?>> testingClasses) {
+        Map<String, List<Precondition>> preconditionsByTestcase = testingClasses.stream().collect(Collectors.toMap(
+                testingClass -> testingClass.getAnnotation(AsyncTest.class).name(),
+                testingClass -> Arrays.stream(testingClass.getDeclaredMethods())
                         .filter(method -> method.getAnnotation(ttrang2301.asynctesting.annotation.Precondition.class) != null)
-                        .collect(Collectors.toList()))
-                        .flatMap(List::stream)
-                        .collect(Collectors.toList());
-        preconditionMethods.forEach(method -> log.info("=== TestcaseResult: {}", method.getName()));
-        // TODO
-        return preconditionMethods.stream().map(method -> new Precondition()).collect(Collectors.toList());
+                        .map(Precondition::new)
+                        .collect(Collectors.toList())
+        ));
+        validatePreconditions(preconditionsByTestcase.values().stream().flatMap(List::stream).collect(Collectors.toList()));
+        return preconditionsByTestcase;
     }
 
-    private static List<Expectation> extractExpectations(Set<Class<?>> classes) {
-        List<Method> expectationMethods =
+    private static void validatePreconditions(List<Precondition> preconditions) {
+        for (Precondition precondition : preconditions) {
+            Method method = precondition.getMethod();
+            if (method.getParameterCount() != 0) {
+                throw new InvalidMetadataException("Expected 0 parameter passed to precondition instead of "
+                        + method.getDeclaringClass().getName() + "#" + method.getName()
+                        + "(" + Arrays.stream(method.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(",")) + ")");
+            }
+            if (!Modifier.isPublic(method.getModifiers())) {
+                throw new InvalidMetadataException("Expected public precondition instead of "
+                        + method.toGenericString() + " "
+                        + method.getDeclaringClass().getName() + "#" + method.getName()
+                        + "(" + Arrays.stream(method.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(",")) + ")");
+            }
+        }
+    }
+
+    private static List<EventConsumer> extractExpectations(Set<Class<?>> classes) {
+        List<EventConsumer> eventConsumers =
                 classes.stream()
-                        .map(clazz -> Arrays.stream(clazz.getMethods())
-                                .filter(method -> method.getAnnotation(ttrang2301.asynctesting.annotation.Expectation.class) != null)
-                                .collect(Collectors.toList()))
+                        .map(clazz -> {
+                            List<Method> expectationMethods = Arrays.stream(clazz.getDeclaredMethods())
+                                    .filter(method -> method.getAnnotation(ttrang2301.asynctesting.annotation.Expectation.class) != null)
+                                    .collect(Collectors.toList());
+                            return expectationMethods.stream()
+                                    .map(expectationMethod -> new EventConsumer(
+                                            expectationMethod.getAnnotation(ttrang2301.asynctesting.annotation.Expectation.class).eventName(),
+                                            new Expectation(expectationMethod),
+                                            clazz.getAnnotation(AsyncTest.class).name()))
+                                    .collect(Collectors.toList());
+                        })
                         .flatMap(List::stream)
                         .collect(Collectors.toList());
-        validateExpectations(expectationMethods);
-        expectationMethods.forEach(method -> log.info("=== Expectation: {}", method.getName()));
-        // TODO
-        return expectationMethods.stream().map(method -> new Expectation()).collect(Collectors.toList());
+        validateExpectations(eventConsumers.stream().map(eventConsumer -> eventConsumer.getExpectation().getMethod()).collect(Collectors.toList()));
+        return eventConsumers;
+    }
+
+    private static void validateExpectations(List<Method> expectationMethods) throws InvalidMetadataException {
+        for (Method method : expectationMethods) {
+            if (method.getParameterCount() != 1) {
+                throw new InvalidMetadataException("Expected 1 and only 1 parameter passed to expectation instead of "
+                        + method.getDeclaringClass().getName() + "#" + method.getName()
+                        + "(" + Arrays.stream(method.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(",")) + ")");
+            }
+            if (!Modifier.isPublic(method.getModifiers())) {
+                throw new InvalidMetadataException("Expected public expectation instead of "
+                        + method.toGenericString() + " "
+                        + method.getDeclaringClass().getName() + "#" + method.getName()
+                        + "(" + Arrays.stream(method.getParameterTypes()).map(Class::getSimpleName).collect(Collectors.joining(",")) + ")");
+            }
+        }
     }
 
     private static List<TestcaseResult> extractInitialTestcaseResults(
@@ -143,7 +222,7 @@ public class AsyncTestingApplication {
     }
 
     private static TestcaseResult toInitialTestResult(Campaign campaign, Class<?> testingClass) {
-        List<CompletionPoint> completionPoints =  Arrays.stream(testingClass.getMethods())
+        List<CompletionPoint> completionPoints =  Arrays.stream(testingClass.getDeclaredMethods())
                 .filter(method -> method.getAnnotation(ttrang2301.asynctesting.annotation.Expectation.class) != null)
                 .map(method -> method.getParameters()[0])
                 .map(Parameter::getType)
@@ -161,7 +240,7 @@ public class AsyncTestingApplication {
             String testId = testingClass.getAnnotation(AsyncTest.class).name();
             Class<?> duplicatedClass = tests.get(testId);
             if (duplicatedClass != null) {
-                throw new InvalidMetadataException("Same test ID '" + testId + "' defined in " +
+                throw new InvalidMetadataException("Same sample ID '" + testId + "' defined in " +
                         "classes " + duplicatedClass.getName() + " and " + testingClass.getName());
             }
             tests.put(testId, testingClass);

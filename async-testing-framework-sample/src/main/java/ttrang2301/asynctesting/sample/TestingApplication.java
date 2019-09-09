@@ -1,4 +1,4 @@
-package ttrang2301.asynctesting.test;
+package ttrang2301.asynctesting.sample;
 
 
 import ttrang2301.asynctesting.AsyncTestingApplication;
