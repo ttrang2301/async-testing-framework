@@ -3,10 +3,12 @@
  * transmission in whole or in part, in any form or by any means, electronic, mechanical or
  * otherwise, is prohibited without the prior written consent of the copyright owner.
  */
-package ttrang2301.asynctesting.othertests.case1;
+package ttrang2301.asynctesting.model;
 
-import ttrang2301.asynctesting.annotation.AsyncTest;
+public class InvalidMetadataException extends RuntimeException {
 
-@AsyncTest(name = "TC-ABS1234-o1")
-public class OtherTestCase1 {
+    public InvalidMetadataException(String message) {
+        super(message);
+    }
+
 }
