@@ -5,7 +5,7 @@
  */
 package ttrang2301.asynctesting.anothertest.case1;
 
-import ttrang2301.asynctesting.AsyncTest;
+import ttrang2301.asynctesting.annotation.AsyncTest;
 
 @AsyncTest(name = "TC-ABS1234-a2")
 public class AnotherTestCase2 {
