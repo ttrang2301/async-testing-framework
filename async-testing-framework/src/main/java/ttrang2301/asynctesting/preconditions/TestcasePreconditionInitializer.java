@@ -1,4 +1,4 @@
-package ttrang2301.asynctesting.model;
+package ttrang2301.asynctesting.preconditions;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

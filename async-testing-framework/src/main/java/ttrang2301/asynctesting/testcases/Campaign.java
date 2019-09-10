@@ -3,17 +3,16 @@
  * transmission in whole or in part, in any form or by any means, electronic, mechanical or
  * otherwise, is prohibited without the prior written consent of the copyright owner.
  */
-package ttrang2301.asynctesting.model;
+package ttrang2301.asynctesting.testcases;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.lang.reflect.Method;
-
 @Data
 @AllArgsConstructor
-public class Precondition {
+public class Campaign {
 
-    private Method method;
+    private String id;
+    private String name;
 
 }

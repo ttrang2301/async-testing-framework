@@ -2,7 +2,7 @@ package ttrang2301.asynctesting.sample;
 
 
 import ttrang2301.asynctesting.AsyncTestingApplication;
-import ttrang2301.asynctesting.EnableAsyncTesting;
+import ttrang2301.asynctesting.annotation.EnableAsyncTesting;
 import ttrang2301.asynctesting.othertests.case1.OtherTestCase1;
 
 @EnableAsyncTesting(
