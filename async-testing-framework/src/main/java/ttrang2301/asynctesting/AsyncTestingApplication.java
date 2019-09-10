@@ -3,6 +3,7 @@ package ttrang2301.asynctesting;
 import org.apache.commons.collections.CollectionUtils;
 import org.reflections.Reflections;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -38,7 +39,7 @@ public class AsyncTestingApplication {
     private TestcaseResultRepository testcaseResultRepository;
     private EventConsumerRepository eventConsumerRepository;
 
-    public AsyncTestingApplication(Set<Class<?>> testingClasses,
+    private AsyncTestingApplication(Set<Class<?>> testingClasses,
                                    TestcaseResultRepository testcaseResultRepository,
                                    EventConsumerRepository eventConsumerRepository) {
         validateTestcaseIdDuplication(testingClasses);
@@ -60,9 +61,10 @@ public class AsyncTestingApplication {
         scannedPackages.add(primaryBasePackageName);
         scannedPackages.addAll(extractTestingPackages(mainClass.getAnnotation(EnableAsyncTesting.class)));
         Set<Class<?>> testingClasses = extractTestingClasses(scannedPackages);
+        validateTestingClasses(testingClasses);
         AsyncTestingApplication application = new AsyncTestingApplication(
                 testingClasses,
-                // TODO
+                // TODO dependency injection
                 null, null);
         application.initializeTestcaseResultDatabase();
         application.createPreconditions();
@@ -78,31 +80,55 @@ public class AsyncTestingApplication {
 
     private void createPreconditions() {
         for (Map.Entry<String, List<Precondition>> testcasePreconditions : this.preconditionsByTestcase.entrySet()) {
+            Object testingObject;
+            if (CollectionUtils.isEmpty(testcasePreconditions.getValue())) {
+                continue;
+            }
+            Class<?> testingClass =
+                    testcasePreconditions.getValue().get(0).getMethod().getDeclaringClass();
+            try {
+                testingObject = testingClass.newInstance();
+            } catch (InstantiationException e) {
+                testcaseResultRepository.updateStatus(
+                        this.campaign.getId(),
+                        testcasePreconditions.getKey(),
+                        TestcaseResult.Status.toPersistedModel(TestcaseResult.Status.FAILED));
+                throw new RuntimeException("Exception occurs constructing instance of " + testingClass, e);
+            } catch (IllegalAccessException e) {
+                // This must not happen because it should be validated when extracting metadata from source code.
+                testcaseResultRepository.updateStatus(
+                        this.campaign.getId(),
+                        testcasePreconditions.getKey(),
+                        TestcaseResult.Status.toPersistedModel(TestcaseResult.Status.FAILED));
+                throw new RuntimeException(
+                        "Cannot construct instance of " + testingClass
+                                + " because there is no public no-argument constructor",
+                        e);
+            }
             for (Precondition precondition : testcasePreconditions.getValue()) {
-                Object testingObject = null;
+                Method method = precondition.getMethod();
                 try {
-                    testingObject = precondition.getMethod().getDeclaringClass().newInstance();
-                } catch (InstantiationException e) {
-                    throw new RuntimeException("Cannot construct instance of " + precondition.getMethod().getDeclaringClass(), e);
-                } catch (IllegalAccessException e) {
-                    // This must not happen because it should be validated when extracting metadata from source code.
-                    // TODO validate
-                    throw new RuntimeException(
-                            "Cannot construct instance of " + precondition.getMethod().getDeclaringClass()
-                            + " because there is no public no-argument constructor",
-                            e);
-                }
-                try {
-                    precondition.getMethod().invoke(testingObject);
+                    method.invoke(testingObject);
                 } catch (InvocationTargetException e) {
-                    // TODO
-                    e.printStackTrace();
+                    testcaseResultRepository.updateStatus(
+                            this.campaign.getId(),
+                            testcasePreconditions.getKey(),
+                            TestcaseResult.Status.toPersistedModel(TestcaseResult.Status.FAILED));
+                    throw new RuntimeException("Exception occurs invoking precondition "
+                            + method.getDeclaringClass().getName() + "#"
+                            + method.getName()
+                            + "(" + Arrays.stream(method.getParameterTypes()).map(Class::getName).collect(Collectors.joining(",")) + ")" ,
+                            e);
                 } catch (IllegalAccessException e) {
                     // This must not happen because it should be validated when extracting metadata from source code.
+                    testcaseResultRepository.updateStatus(
+                            this.campaign.getId(),
+                            testcasePreconditions.getKey(),
+                            TestcaseResult.Status.toPersistedModel(TestcaseResult.Status.FAILED));
                     throw new RuntimeException("Cannot invoke precondition "
-                            + precondition.getMethod().getDeclaringClass().getName() + "#"
-                            + precondition.getMethod().getName()
-                            + "(" + Arrays.stream(precondition.getMethod().getParameterTypes()).map(Class::getName).collect(Collectors.joining(",")) + ")" ,
+                            + method.getDeclaringClass().getName() + "#"
+                            + method.getName()
+                            + "(" + Arrays.stream(method.getParameterTypes()).map(Class::getName).collect(Collectors.joining(",")) + ")" ,
                             e);
                 }
             }
@@ -115,6 +141,20 @@ public class AsyncTestingApplication {
 
     private void waitForExpectations() {
         // TODO
+    }
+
+    private static void validateTestingClasses(Set<Class<?>> testingClasses) {
+        for (Class<?> testingClass : testingClasses) {
+            boolean validConstructorExisting = false;
+            for (Constructor constructor : testingClass.getDeclaredConstructors()) {
+                if (constructor.getParameterCount() == 0 && Modifier.isPublic(constructor.getModifiers())) {
+                    validConstructorExisting = true;
+                }
+            }
+            if (!validConstructorExisting) {
+                throw new InvalidMetadataException("Require public with no argument construct in class " + testingClass.getName());
+            }
+        }
     }
 
     private static List<String> extractTestingPackages(EnableAsyncTesting annotation) {
