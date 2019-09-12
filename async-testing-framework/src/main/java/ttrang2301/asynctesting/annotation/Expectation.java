@@ -13,6 +13,7 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface Expectation {
 
+    String key();
     String eventName();
 
 }

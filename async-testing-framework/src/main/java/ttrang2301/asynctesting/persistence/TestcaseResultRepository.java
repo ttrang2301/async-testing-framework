@@ -11,5 +11,7 @@ public interface TestcaseResultRepository {
 
     void insertTestcaseResults(List<TestcaseResult> initialTestcaseResults);
 
-    void updateStatus(String campaignId, String testcaseId, TestcaseResult.Status toPersistedModel);
+    void updateStatus(String campaignId, String testcaseId, TestcaseResult.Status status);
+
+    void updateExpectationStatus(String campaignId, String testcaseId, String expectationKey, TestcaseResult.Expectation.Status status);
 }

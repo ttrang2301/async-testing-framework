@@ -5,6 +5,7 @@
  */
 package ttrang2301.asynctesting;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import java.lang.reflect.InvocationTargetException;
@@ -25,7 +26,8 @@ import ttrang2301.asynctesting.persistence.TestcaseResultRepository;
 import ttrang2301.asynctesting.testcases.Campaign;
 import ttrang2301.asynctesting.testcases.TestcaseResult;
 
-public abstract class ActiveMqEventConsumer implements Runnable {
+@Slf4j
+public class ActiveMqEventConsumer implements Runnable {
 
     private String connectionUrl;
     private String topicName;
@@ -52,42 +54,35 @@ public abstract class ActiveMqEventConsumer implements Runnable {
 
     @Override
     public void run() {
-        // Getting JMS connection from the server
-//        ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(connectionUrl);
-//        Connection connection = connectionFactory.createConnection();
-//        connection.start();
-//
-//        // Creating session for seding messages
-//        Session session = connection.createSession(false,
-//                Session.AUTO_ACKNOWLEDGE);
-//
-//        // Getting the queue 'JCG_QUEUE'
-//        Destination destination = session.createTopic(topicName);
-//
-//        // MessageConsumer is used for receiving (consuming) messages
-//        MessageConsumer consumer = session.createConsumer(destination);
-//
-//        // Here we receive the message.
-//        while (true) {
-//            // TODO
-//            Message message = consumer.receive();
-//
-//            // We will be using TestMessage in our example. MessageProducer sent us a TextMessage
-//            // so we must cast to it to get access to its .getText() method.
-//            if (message instanceof TextMessage) {
-//                TextMessage textMessage = (TextMessage) message;
-//                Object event = textMessage.getBody(eventClass);
-//                try {
-//                    Object testingObject = initializeTestingObject(this.campaign, this.testcaseId,
-//                            this.expectation.getMethod().getDeclaringClass());
-//                    assertExpectationOfTestcase(testingObject, this.expectation.getMethod());
-//                } catch (Exception e) {
-//                    // TODO
-//                }
-//            }
-//        }
-//
-//        connection.close();
+        MessageConsumer consumer;
+        try {
+            ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(connectionUrl);
+            Connection connection = connectionFactory.createConnection();
+            connection.start();
+            Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+            Destination destination = session.createTopic(topicName);
+            consumer = session.createConsumer(destination);
+        } catch (Exception e) {
+            log.error("Executing testcase {}/{} failed", this.campaign.getId(), this.testcaseId, e);
+            return;
+        }
+        while (true) {
+            Message message = consumer.receive();
+            if (message instanceof TextMessage) {
+                TextMessage textMessage = (TextMessage) message;
+                Object event = textMessage.getBody(eventClass);
+                try {
+                    Object testingObject = initializeTestingObject(this.campaign, this.testcaseId,
+                            this.expectation.getMethod().getDeclaringClass());
+                    assertExpectationOfTestcase(testingObject, this.expectation.getMethod(), event);
+                } catch (Exception e) {
+                    // TODO
+                }
+                this.testcaseResultRepository.updateExpectationStatus(
+                        this.campaign.getId(), this.testcaseId, this.expectation.getKey(),
+                        ttrang2301.asynctesting.persistence.TestcaseResult.Expectation.Status.SUCCESSFUL);
+            }
+        }
     }
 
     private Object initializeTestingObject(Campaign campaign, String testcaseId, Class<?> testingClass) {
@@ -98,7 +93,7 @@ public abstract class ActiveMqEventConsumer implements Runnable {
             throw new RuntimeException("Exception occurs constructing instance of " + testingClass, e);
         } catch (IllegalAccessException e) {
             // This must not happen because it should be validated when extracting metadata from source code.
-            testcaseResultRepository.updateStatus(
+            this.testcaseResultRepository.updateStatus(
                     campaign.getId(),
                     testcaseId,
                     TestcaseResult.Status.toPersistedModel(TestcaseResult.Status.FAILED));
@@ -110,21 +105,18 @@ public abstract class ActiveMqEventConsumer implements Runnable {
         return testingObject;
     }
 
-    private void assertExpectationOfTestcase(Object testingObject, Method expectationMethod) {
+    private void assertExpectationOfTestcase(Object testingObject, Method expectationMethod, Object event) {
         try {
-            expectationMethod.invoke(testingObject);
+            expectationMethod.invoke(testingObject, event);
         } catch (InvocationTargetException e) {
-            throw new RuntimeException("Exception occurs invoking precondition "
-                    + expectationMethod.getDeclaringClass().getName() + "#"
-                    + expectationMethod.getName()
-                    + "(" + Arrays.stream(expectationMethod.getParameterTypes()).map(Class::getName).collect(Collectors.joining(",")) + ")" ,
-                    e);
+            // For any exception occurring during asserting, the expectation is considered not-met.
+            // TODO Treat the assertion fail exception different with runtime exception
         } catch (IllegalAccessException e) {
             // This must not happen because it should be validated when extracting metadata from source code.
             throw new RuntimeException("Cannot invoke precondition "
                     + expectationMethod.getDeclaringClass().getName() + "#"
                     + expectationMethod.getName()
-                    + "(" + Arrays.stream(expectationMethod.getParameterTypes()).map(Class::getName).collect(Collectors.joining(",")) + ")" ,
+                    + "(" + Arrays.stream(expectationMethod.getParameterTypes()).map(Class::getName).collect(Collectors.joining(",")) + ")",
                     e);
         }
     }
