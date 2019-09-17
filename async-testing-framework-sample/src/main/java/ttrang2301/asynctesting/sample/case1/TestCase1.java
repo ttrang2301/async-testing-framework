@@ -17,7 +17,7 @@ public class TestCase1 {
         System.out.println("Public Preconsitions initialized");
     }
 
-    @Expectation(eventName = "")
+    @Expectation(key = "", eventName = "")
     public void assertStudentCreatedEvent(Object e) {
 //  public void assertStudentCreatedEvent(StudentCreatedEvent eventName) {
         // assertThat(eventName.student.name == "A");
