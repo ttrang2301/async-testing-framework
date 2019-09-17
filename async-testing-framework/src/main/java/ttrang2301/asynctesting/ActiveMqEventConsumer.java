@@ -11,19 +11,15 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
-import javax.jms.Connection;
-import javax.jms.ConnectionFactory;
-import javax.jms.Destination;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.Session;
-import javax.jms.TextMessage;
+import javax.jms.*;
 
 import ttrang2301.asynctesting.expectations.Expectation;
 import ttrang2301.asynctesting.persistence.TestcaseResultRepository;
 import ttrang2301.asynctesting.testcases.Campaign;
+import ttrang2301.asynctesting.testcases.Testcase;
 import ttrang2301.asynctesting.testcases.TestcaseResult;
 
 @Slf4j
@@ -33,21 +29,19 @@ public class ActiveMqEventConsumer implements Runnable {
     private String topicName;
 
     private Campaign campaign;
-    private String testcaseId;
     private Class<?> eventClass;
-    private Expectation expectation;
+    private List<Expectation> expectations;
 
     private TestcaseResultRepository testcaseResultRepository;
 
     protected ActiveMqEventConsumer(String connectionUrl, String topicName, Campaign campaign,
-                                    String testcaseId, Class<?> eventClass,
-                                    Expectation expectation, TestcaseResultRepository testcaseResultRepository) {
+                                    Class<?> eventClass, List<Expectation> expectations,
+                                    TestcaseResultRepository testcaseResultRepository) {
         this.connectionUrl = connectionUrl;
         this.topicName = topicName;
         this.campaign = campaign;
-        this.testcaseId = testcaseId;
         this.eventClass = eventClass;
-        this.expectation = expectation;
+        this.expectations = expectations;
         // TODO Dependency Injection
         this.testcaseResultRepository = testcaseResultRepository;
     }
@@ -63,29 +57,39 @@ public class ActiveMqEventConsumer implements Runnable {
             Destination destination = session.createTopic(topicName);
             consumer = session.createConsumer(destination);
         } catch (Exception e) {
-            log.error("Executing testcase {}/{} failed", this.campaign.getId(), this.testcaseId, e);
+            log.error("Campaign {} encounters issue observing event {} ", this.campaign.getId(), this.eventClass.getName(), e);
             return;
         }
         while (true) {
-            Message message = consumer.receive();
-            if (message instanceof TextMessage) {
-                TextMessage textMessage = (TextMessage) message;
-                Object event = textMessage.getBody(eventClass);
-                try {
-                    Object testingObject = initializeTestingObject(this.campaign, this.testcaseId,
-                            this.expectation.getMethod().getDeclaringClass());
-                    assertExpectationOfTestcase(testingObject, this.expectation.getMethod(), event);
-                } catch (Exception e) {
-                    // TODO
-                }
-                this.testcaseResultRepository.updateExpectationStatus(
-                        this.campaign.getId(), this.testcaseId, this.expectation.getKey(),
-                        ttrang2301.asynctesting.persistence.TestcaseResult.Expectation.Status.SUCCESSFUL);
-            }
+            consumeMessage(consumer);
         }
     }
 
-    private Object initializeTestingObject(Campaign campaign, String testcaseId, Class<?> testingClass) {
+    private void consumeMessage(MessageConsumer consumer) {
+        Message message = null;
+        try {
+            message = consumer.receive();
+        } catch (JMSException e) {
+            log.error("Campaign {} encounters issue observing event {} ", this.campaign.getId(), this.eventClass.getName(), e);
+        }
+        if (!(message instanceof TextMessage)) {
+            return;
+        }
+        TextMessage textMessage = (TextMessage) message;
+        Object event = null;
+        try {
+            event = textMessage.getBody(eventClass);
+        } catch (JMSException e) {
+            log.warn("Campaign {} encounters issue deserializing event {} ", this.campaign.getId(), this.eventClass.getName(), e);
+        }
+        for (Expectation expectation : this.expectations) {
+            Class<?> testingClass = expectation.getMethod().getDeclaringClass();
+            Object testingObject = initializeTestingObject(testingClass);
+            assertExpectationOfTestcase(testingObject, expectation, event);
+        }
+    }
+
+    private Object initializeTestingObject(Class<?> testingClass) {
         Object testingObject;
         try {
             testingObject = testingClass.newInstance();
@@ -95,7 +99,7 @@ public class ActiveMqEventConsumer implements Runnable {
             // This must not happen because it should be validated when extracting metadata from source code.
             this.testcaseResultRepository.updateStatus(
                     campaign.getId(),
-                    testcaseId,
+                    Testcase.extractTestcase(testingClass).getId(),
                     TestcaseResult.Status.toPersistedModel(TestcaseResult.Status.FAILED));
             throw new RuntimeException(
                     "Cannot construct instance of " + testingClass
@@ -105,19 +109,22 @@ public class ActiveMqEventConsumer implements Runnable {
         return testingObject;
     }
 
-    private void assertExpectationOfTestcase(Object testingObject, Method expectationMethod, Object event) {
+    private void assertExpectationOfTestcase(Object testingObject,  Expectation expectation, Object event) {
         try {
-            expectationMethod.invoke(testingObject, event);
+            expectation.getMethod().invoke(testingObject, event);
         } catch (InvocationTargetException e) {
-            // For any exception occurring during asserting, the expectation is considered not-met.
+            // For any exception occurring during asserting, the expectations is considered not-met.
             // TODO Treat the assertion fail exception different with runtime exception
         } catch (IllegalAccessException e) {
             // This must not happen because it should be validated when extracting metadata from source code.
             throw new RuntimeException("Cannot invoke precondition "
-                    + expectationMethod.getDeclaringClass().getName() + "#"
-                    + expectationMethod.getName()
-                    + "(" + Arrays.stream(expectationMethod.getParameterTypes()).map(Class::getName).collect(Collectors.joining(",")) + ")",
+                    + expectation.getMethod().getDeclaringClass().getName() + "#"
+                    + expectation.getMethod().getName()
+                    + "(" + Arrays.stream(expectation.getMethod().getParameterTypes()).map(Class::getName).collect(Collectors.joining(",")) + ")",
                     e);
         }
+        this.testcaseResultRepository.updateExpectationStatus(
+                this.campaign.getId(), expectation.getTestcase().getId(), expectation.getKey(),
+                ttrang2301.asynctesting.persistence.TestcaseResult.Expectation.Status.SUCCESSFUL);
     }
 }

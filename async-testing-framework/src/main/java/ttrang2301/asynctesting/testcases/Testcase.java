@@ -1,5 +1,7 @@
 package ttrang2301.asynctesting.testcases;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.reflections.Reflections;
 import ttrang2301.asynctesting.annotation.EnableAsyncTesting;
@@ -12,7 +14,11 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Slf4j
+@Data
+@AllArgsConstructor
 public class Testcase {
+
+    private String id;
 
     public static Set<Class<?>> extractTestingClasses(Class<?> mainClass) {
         String primaryBasePackageName = mainClass.getPackage().getName();
@@ -23,6 +29,11 @@ public class Testcase {
         validateTestingClassConstructors(testingClasses);
         validateTestcaseIdDuplication(testingClasses);
         return testingClasses;
+    }
+
+    public static Testcase extractTestcase(Class<?> testingClass) {
+        AsyncTest testingClassAnnotation = testingClass.getAnnotation(AsyncTest.class);
+        return new Testcase(testingClassAnnotation.name());
     }
 
     private static void validateTestcaseIdDuplication(Set<Class<?>> testingClasses) throws InvalidMetadataException {
@@ -69,5 +80,4 @@ public class Testcase {
         classes.forEach(testingClass -> log.info("=== Test class: {}", testingClass.getName()));
         return classes;
     }
-
 }

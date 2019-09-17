@@ -14,14 +14,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import ttrang2301.asynctesting.InvalidMetadataException;
 import ttrang2301.asynctesting.annotation.AsyncTest;
+import ttrang2301.asynctesting.testcases.Testcase;
 
 @Data
 @AllArgsConstructor
 public class Expectation {
 
-    private String testcaseId;
     private String key;
     private Method method;
+
+    public Testcase getTestcase() {
+        return Testcase.extractTestcase(method.getDeclaringClass());
+    }
 
     public static Map<String, List<Expectation>> extractExpectationsByTestcase(Set<Class<?>> testingClasses) {
         Map<String, List<Expectation>> expectationsByEvent = new HashMap<>();
@@ -39,7 +43,7 @@ public class Expectation {
                     expectations = new ArrayList<>();
                     expectationsByEvent.put(eventName, expectations);
                 }
-                expectations.add(new Expectation(testcaseId, expectationMethodAnnotation.key(), expectationMethod));
+                expectations.add(new Expectation(expectationMethodAnnotation.key(), expectationMethod));
             }
         }
         validateExpectations(expectationsByEvent.values().stream()
