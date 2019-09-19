@@ -2,6 +2,7 @@ package ttrang2301.asynctesting;
 
 import lombok.extern.slf4j.Slf4j;
 import ttrang2301.asynctesting.expectations.Expectation;
+import ttrang2301.asynctesting.persistence.TestcaseResultRepository;
 import ttrang2301.asynctesting.preconditions.Precondition;
 import ttrang2301.asynctesting.testcases.Campaign;
 import ttrang2301.asynctesting.testcases.Testcase;
@@ -19,37 +20,40 @@ public class AsyncTestingApplication {
 
     private Campaign campaign;
     private Map<String, List<Precondition>> preconditionsByTestcase;
-    private Map<String, List<Expectation>> expectationsByTestcase;
+    private Map<String, List<Expectation>> expectationsByEvent;
     private List<TestcaseResult> initialTestcaseResults;
 
     private CreatePreconditionService createPreconditionService;
     private InitializeTestcaseService initializeTestcaseService;
 
     private String connectionUrl;
+    private TestcaseResultRepository testcaseResultRepository;
 
     private AsyncTestingApplication(Class<?> mainClass,
                                     CreatePreconditionService createPreconditionService,
                                     InitializeTestcaseService initializeTestcaseService,
                                     // TODO Abstract EventConsumer + Dependency Injection
-                                    String connectionUrl) {
+                                    String connectionUrl,
+                                    TestcaseResultRepository testcaseResultRepository) {
         Set<Class<?>> testingClasses = Testcase.extractTestingClasses(mainClass);
         this.campaign = new Campaign(UUID.randomUUID().toString(),
                 "Testing campaign running at " + ZonedDateTime.now(ZoneOffset.UTC));
         this.preconditionsByTestcase = Precondition.extractPreconditionsByTestcases(testingClasses);
-        this.expectationsByTestcase = Expectation.extractExpectationsByTestcase(testingClasses);
+        this.expectationsByEvent = Expectation.extractExpectationsByEvent(testingClasses);
         this.initialTestcaseResults = TestcaseResult.extractInitialTestcaseResults(this.campaign, testingClasses);
 
         this.createPreconditionService = createPreconditionService;
         this.initializeTestcaseService = initializeTestcaseService;
 
         this.connectionUrl = connectionUrl;
+        this.testcaseResultRepository = testcaseResultRepository;
     }
 
     public static void run(Class<?> mainClass, String[] args) {
         AsyncTestingApplication application = new AsyncTestingApplication(
                 mainClass,
                 // TODO dependency injection
-                null, null, "tcp://localhost:61616");
+                null, null, "tcp://localhost:61616", null);
         application.initializeTestcaseResultDatabase();
         application.createPreconditions();
         application.waitForExpectations();
@@ -65,8 +69,11 @@ public class AsyncTestingApplication {
 
     private void waitForExpectations() {
         // TODO
-        for (String eventName : this.expectationsByTestcase.keySet()) {
-            thread(new ActiveMqEventConsumer(connectionUrl, eventName), false);
+        for (Map.Entry<String, List<Expectation>> eventConsumer : this.expectationsByEvent.entrySet()) {
+            ActiveMqEventConsumer activeMqEventConsumer = new ActiveMqEventConsumer(connectionUrl,
+                    eventConsumer.getKey(), this.campaign, eventConsumer.getValue(),
+                    this.testcaseResultRepository);
+            thread(activeMqEventConsumer, false);
         }
     }
 
