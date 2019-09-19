@@ -4,21 +4,14 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <parent>
-        <artifactId>async-testing-framework-parent</artifactId>
-        <groupId>ttrang2301.asynctesting</groupId>
-        <version>0.0.1-SNAPSHOT</version>
-    </parent>
-
+    <groupId>ttrang2301.asynctesting.sample</groupId>
     <artifactId>async-testing-framework-sample</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <packaging>pom</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>ttrang2301.asynctesting</groupId>
-            <artifactId>async-testing-framework</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
-
+    <modules>
+        <module>student-service</module>
+        <module>student-service-test</module>
+    </modules>
 
 </project>

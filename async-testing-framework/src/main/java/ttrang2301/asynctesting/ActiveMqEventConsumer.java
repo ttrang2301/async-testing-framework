@@ -29,18 +29,17 @@ public class ActiveMqEventConsumer implements Runnable {
     private String topicName;
 
     private Campaign campaign;
-    private Class<?> eventClass;
     private List<Expectation> expectations;
 
     private TestcaseResultRepository testcaseResultRepository;
 
-    protected ActiveMqEventConsumer(String connectionUrl, String topicName, Campaign campaign,
-                                    Class<?> eventClass, List<Expectation> expectations,
+    protected ActiveMqEventConsumer(String connectionUrl, String topicName,
+                                    Campaign campaign,
+                                    List<Expectation> expectations,
                                     TestcaseResultRepository testcaseResultRepository) {
         this.connectionUrl = connectionUrl;
         this.topicName = topicName;
         this.campaign = campaign;
-        this.eventClass = eventClass;
         this.expectations = expectations;
         // TODO Dependency Injection
         this.testcaseResultRepository = testcaseResultRepository;
@@ -57,7 +56,7 @@ public class ActiveMqEventConsumer implements Runnable {
             Destination destination = session.createTopic(topicName);
             consumer = session.createConsumer(destination);
         } catch (Exception e) {
-            log.error("Campaign {} encounters issue observing event {} ", this.campaign.getId(), this.eventClass.getName(), e);
+            log.error("Campaign {} encounters issue observing topic {} ", this.campaign.getId(), this.topicName, e);
             return;
         }
         while (true) {
@@ -70,21 +69,22 @@ public class ActiveMqEventConsumer implements Runnable {
         try {
             message = consumer.receive();
         } catch (JMSException e) {
-            log.error("Campaign {} encounters issue observing event {} ", this.campaign.getId(), this.eventClass.getName(), e);
+            log.error("Campaign {} encounters issue observing topic {} ", this.campaign.getId(), this.topicName, e);
         }
         if (!(message instanceof TextMessage)) {
             return;
         }
         TextMessage textMessage = (TextMessage) message;
-        Object event = null;
-        try {
-            event = textMessage.getBody(eventClass);
-        } catch (JMSException e) {
-            log.warn("Campaign {} encounters issue deserializing event {} ", this.campaign.getId(), this.eventClass.getName(), e);
-        }
         for (Expectation expectation : this.expectations) {
             Class<?> testingClass = expectation.getMethod().getDeclaringClass();
             Object testingObject = initializeTestingObject(testingClass);
+            Object event = null;
+            Class<?> observedEventClass = expectation.getObservedEventClass();
+            try {
+                event = textMessage.getBody(observedEventClass);
+            } catch (JMSException e) {
+                log.warn("Campaign {} encounters issue deserializing event {} ", this.campaign.getId(), observedEventClass.getName(), e);
+            }
             assertExpectationOfTestcase(testingObject, expectation, event);
         }
     }
