@@ -2,6 +2,7 @@ package ttrang2301.asynctesting;
 
 import lombok.extern.slf4j.Slf4j;
 import ttrang2301.asynctesting.expectations.Expectation;
+import ttrang2301.asynctesting.persistence.TestcaseResultMongoRepository;
 import ttrang2301.asynctesting.persistence.TestcaseResultRepository;
 import ttrang2301.asynctesting.preconditions.Precondition;
 import ttrang2301.asynctesting.testcases.Campaign;
@@ -50,10 +51,12 @@ public class AsyncTestingApplication {
     }
 
     public static void run(Class<?> mainClass, String[] args) {
+        TestcaseResultMongoRepository repository =
+                new TestcaseResultMongoRepository();
         AsyncTestingApplication application = new AsyncTestingApplication(
                 mainClass,
                 // TODO dependency injection
-                null, null, "tcp://localhost:61616", null);
+                new CreatePreconditionService(repository), new InitializeTestcaseService(repository), "tcp://localhost:61616", repository);
         application.initializeTestcaseResultDatabase();
         application.createPreconditions();
         application.subscribeToSystemEvents();
@@ -68,7 +71,6 @@ public class AsyncTestingApplication {
     }
 
     private void subscribeToSystemEvents() {
-        // TODO
         for (Map.Entry<String, List<Expectation>> eventConsumer : this.expectationsByEvent.entrySet()) {
             ActiveMqEventConsumer activeMqEventConsumer = new ActiveMqEventConsumer(connectionUrl,
                     eventConsumer.getKey(), this.campaign, eventConsumer.getValue(),
