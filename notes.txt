@@ -1,1 +1,13 @@
-docker run --name='activemq' -it --rm -e 'ACTIVEMQ_ADMIN_LOGIN=admin' -e 'ACTIVEMQ_ADMIN_PASSWORD=admin' -v /Users/mojave/Desktop/Code/async-testing-framework/activemq-data:/data -v /Users/mojave/Desktop/Code/async-testing-framework/activemq-log:/var/log/activemq -p 8161:8161 -p 61616:61616 -p 61613:61613 webcenter/activemq:5.14.3
+docker run --name=activemq -d --rm \
+    -e ACTIVEMQ_ADMIN_LOGIN=admin -e ACTIVEMQ_ADMIN_PASSWORD=admin \
+    -v /Users/mojave/Desktop/Code/async-testing-framework/activemq-data:/data \
+    -v /Users/mojave/Desktop/Code/async-testing-framework/activemq-log:/var/log/activemq \
+    -p 8161:8161 -p 61616:61616 -p 61613:61613 \
+    webcenter/activemq:5.14.3
+
+docker run --name mongodb \
+    -e MONGO_INITDB_ROOT_USERNAME=admin \
+    -e MONGO_INITDB_ROOT_PASSWORD=admin \
+    -v /Users/mojave/Desktop/Code/async-testing-framework/mongodb-data:/data/db \
+    -p 27017:27017 \
+    -d mongo

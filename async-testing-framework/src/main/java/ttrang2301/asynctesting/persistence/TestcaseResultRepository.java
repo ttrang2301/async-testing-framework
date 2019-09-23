@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface TestcaseResultRepository {
 
-    void insertTestcaseResults(List<TestcaseResult> initialTestcaseResults);
+    void insertTestcaseResults(List<TestcaseResult> testcaseResults);
+
+    void insertTestcaseResult(TestcaseResult testcaseResult);
 
     void updateStatus(String campaignId, String testcaseId, TestcaseResult.Status status);
 
