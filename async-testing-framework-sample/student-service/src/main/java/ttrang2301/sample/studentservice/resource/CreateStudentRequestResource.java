@@ -3,9 +3,12 @@ package ttrang2301.sample.studentservice.resource;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
 import ttrang2301.sample.studentservice.model.CreateStudentRequest;
 import ttrang2301.sample.studentservice.model.Student;
@@ -22,11 +25,16 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/create-student-requests")
 public class CreateStudentRequestResource {
 
+    public static final String CREATE_STUDENT_REQUEST_CREATED_EVENT_NAME = "CreateStudentRequestCreated";
+
     @Autowired
     private CreateStudentRequestRepository requestRepository;
 
     @Autowired
     private StudentRepository studentRepository;
+
+    @Autowired
+    private JmsTemplate jmsTemplate;
 
     @PostMapping
     public ResponseEntity<String> createCreateStudentRequest(@RequestBody CreateStudentForm form) {
@@ -34,7 +42,8 @@ public class CreateStudentRequestResource {
         CreateStudentRequest request = new CreateStudentRequest(requestId, form, 0, null);
         requestRepository.save(new ttrang2301.sample.studentservice.model.CreateStudentRequest(requestId, form.getStudentName(), 0, null));
         ExecutorService executor = Executors.newSingleThreadExecutor();
-        executor.submit(new CreateStudentRunnable(requestRepository, studentRepository, request));
+        executor.submit(new StudentResource.CreateStudentRunnable(requestRepository, studentRepository, jmsTemplate, request));
+        jmsTemplate.convertAndSend(new ActiveMQTopic(CREATE_STUDENT_REQUEST_CREATED_EVENT_NAME), request);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(requestId);
     }
 
@@ -55,7 +64,7 @@ public class CreateStudentRequestResource {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    private static final class CreateStudentRequest {
+    public static final class CreateStudentRequest {
 
         private String id;
         private CreateStudentRequestResource.CreateStudentForm form;
@@ -67,51 +76,10 @@ public class CreateStudentRequestResource {
     @Data
     @AllArgsConstructor
     @NoArgsConstructor
-    private static final class CreateStudentForm {
+    public static final class CreateStudentForm {
 
         private String studentName;
 
-    }
-
-    private static final class CreateStudentRunnable implements Runnable {
-
-        private CreateStudentRequestRepository requestRepository;
-        private StudentRepository studentRepository;
-
-        private CreateStudentRequestResource.CreateStudentRequest request;
-
-        private CreateStudentRunnable(CreateStudentRequestRepository requestRepository,
-                                      StudentRepository studentRepository,
-                                      CreateStudentRequestResource.CreateStudentRequest request) {
-            this.requestRepository = requestRepository;
-            this.studentRepository = studentRepository;
-            this.request = request;
-        }
-
-        @Override
-        public void run() {
-            String createdStudentId = UUID.randomUUID().toString();
-            System.out.println("START processing request " + request.getId() + " - Creating student " + createdStudentId);
-            ttrang2301.sample.studentservice.model.CreateStudentRequest persistedRequest = requestRepository.findById(request.getId()).get();
-            for (int i=0; i<9; i++) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    System.out.println("Encounter issue ");
-                    e.printStackTrace();
-                }
-                int progress = (i + 1) * 10;
-                persistedRequest.setStatus(progress);
-                persistedRequest = requestRepository.save(persistedRequest);
-                System.out.println("PROCESSING request " + request.getId() + " - Creating student " + createdStudentId + ": " + progress + "%");
-            }
-            Student student = new Student(createdStudentId, request.getForm().getStudentName());
-            studentRepository.save(student);
-            persistedRequest.setCreatedStudentId(createdStudentId);
-            persistedRequest.setStatus(100);
-            requestRepository.save(persistedRequest);
-            System.out.println("COMPLETE request " + request.getId() + " - Creating student " + createdStudentId);
-        }
     }
 
 }
