@@ -56,7 +56,7 @@ public class AsyncTestingApplication {
                 null, null, "tcp://localhost:61616", null);
         application.initializeTestcaseResultDatabase();
         application.createPreconditions();
-        application.waitForExpectations();
+        application.subscribeToSystemEvents();
     }
 
     private void initializeTestcaseResultDatabase() {
@@ -67,7 +67,7 @@ public class AsyncTestingApplication {
         createPreconditionService.createPreconditions(this.campaign, this.preconditionsByTestcase);
     }
 
-    private void waitForExpectations() {
+    private void subscribeToSystemEvents() {
         // TODO
         for (Map.Entry<String, List<Expectation>> eventConsumer : this.expectationsByEvent.entrySet()) {
             ActiveMqEventConsumer activeMqEventConsumer = new ActiveMqEventConsumer(connectionUrl,
