@@ -11,7 +11,7 @@ import ttrang2301.sample.studentservice.resource.CreateStudentRequestResource;
 @Component
 public class CreateStudentRequestCreatedEventConsumer {
 
-    @JmsListener(destination = CreateStudentRequestResource.CREATE_STUDENT_REQUEST_CREATED_EVENT_NAME)
+    @JmsListener(destination = "Consumer.Stalker." + CreateStudentRequestResource.CREATE_STUDENT_REQUEST_CREATED_EVENT_NAME)
     public void receiveTopicMessage(@Payload CreateStudentRequestResource.CreateStudentRequest request) {
         log.info("received <" + request + ">");
     }

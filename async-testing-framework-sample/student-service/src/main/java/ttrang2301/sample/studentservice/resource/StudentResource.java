@@ -21,7 +21,7 @@ import java.util.UUID;
 @RequestMapping("/students")
 public class StudentResource {
 
-    public static final String STUDENT_CREATED_EVENT_NAME = "StudentCreated";
+    public static final String STUDENT_CREATED_EVENT_NAME = "VirtualTopic.StudentCreated";
 
     @Autowired
     private StudentRepository repository;
