@@ -55,6 +55,7 @@ public class TestcaseResultMongoRepository implements TestcaseResultRepository {
                 new Document("$set", new Document("status", status.getValue()))
         );
         if (updateResult.getModifiedCount() != 1) {
+            // TODO Handle update unexpected result
             log.error("Trying to update status of testcase {}.{} to {}. Expect modified count is 1 but encounter {}",
                     campaignId, testcaseId, status, updateResult.getModifiedCount());
         }
@@ -69,6 +70,7 @@ public class TestcaseResultMongoRepository implements TestcaseResultRepository {
                 new UpdateOptions().arrayFilters(Arrays.asList(Filters.in("element.key", expectationKey)))
         );
         if (updateResult.getModifiedCount() != 1) {
+            // TODO Handle update unexpected result
             log.error("Trying to update status of expectation {}.{}.{} to {}. Expect modified count is 1 but encounter {}",
                     campaignId, testcaseId, expectationKey, status, updateResult.getModifiedCount());
         }
