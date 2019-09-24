@@ -3,15 +3,12 @@ package ttrang2301.sample.studentservice.resource;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
 import org.apache.activemq.command.ActiveMQTopic;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.web.bind.annotation.*;
-import ttrang2301.sample.studentservice.model.CreateStudentRequest;
-import ttrang2301.sample.studentservice.model.Student;
 import ttrang2301.sample.studentservice.repository.CreateStudentRequestRepository;
 import ttrang2301.sample.studentservice.repository.StudentRepository;
 
@@ -19,13 +16,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 @RestController
 @RequestMapping("/create-student-requests")
 public class CreateStudentRequestResource {
 
-    public static final String CREATE_STUDENT_REQUEST_CREATED_EVENT_NAME = "CreateStudentRequestCreated";
+    public static final String CREATE_STUDENT_REQUEST_CREATED_EVENT_NAME = "VirtualTopic.CreateStudentRequestCreated";
 
     @Autowired
     private CreateStudentRequestRepository requestRepository;

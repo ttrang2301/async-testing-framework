@@ -11,7 +11,7 @@ import ttrang2301.sample.studentservice.resource.StudentResource;
 @Component
 public class StudentCreatedEventConsumer {
 
-    @JmsListener(destination = StudentResource.STUDENT_CREATED_EVENT_NAME)
+    @JmsListener(destination = "Consumer.Stalker." + StudentResource.STUDENT_CREATED_EVENT_NAME)
     public void receiveTopicMessage(@Payload StudentResource.Student student) {
         log.info("received <" + student + ">");
     }
