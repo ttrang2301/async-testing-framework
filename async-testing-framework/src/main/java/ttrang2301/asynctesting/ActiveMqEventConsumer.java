@@ -5,6 +5,8 @@
  */
 package ttrang2301.asynctesting;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
@@ -47,84 +49,92 @@ public class ActiveMqEventConsumer implements Runnable {
 
     @Override
     public void run() {
-        MessageConsumer consumer;
         try {
-            ConnectionFactory connectionFactory = new ActiveMQConnectionFactory(connectionUrl);
-            Connection connection = connectionFactory.createConnection();
-            connection.start();
+            Connection connection = new ActiveMQConnectionFactory(connectionUrl).createConnection();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
-            Destination destination = session.createTopic(topicName);
-            consumer = session.createConsumer(destination);
+            connection.start();
+            Queue queueA = session.createQueue("Consumer.YS.VirtualTopic." + topicName);
+            VirtualMessageListener listenerA1 = new VirtualMessageListener(campaign, expectations, testcaseResultRepository);
+            MessageConsumer consumerA1 = session.createConsumer(queueA);
+            consumerA1.setMessageListener(listenerA1);
         } catch (Exception e) {
             log.error("Campaign {} encounters issue observing topic {} ", this.campaign.getId(), this.topicName, e);
-            return;
-        }
-        while (true) {
-            consumeMessage(consumer);
         }
     }
 
-    private void consumeMessage(MessageConsumer consumer) {
-        Message message = null;
-        try {
-            message = consumer.receive();
-        } catch (JMSException e) {
-            log.error("Campaign {} encounters issue observing topic {} ", this.campaign.getId(), this.topicName, e);
+    private static final class VirtualMessageListener implements MessageListener {
+
+        private Campaign campaign;
+        private List<Expectation> expectations;
+
+        private TestcaseResultRepository testcaseResultRepository;
+
+        private ObjectMapper objectMapper = new ObjectMapper();
+
+        public VirtualMessageListener(Campaign campaign, List<Expectation> expectations, TestcaseResultRepository testcaseResultRepository) {
+            this.campaign = campaign;
+            this.expectations = expectations;
+            this.testcaseResultRepository = testcaseResultRepository;
         }
-        if (!(message instanceof TextMessage)) {
-            return;
-        }
-        TextMessage textMessage = (TextMessage) message;
-        for (Expectation expectation : this.expectations) {
-            Class<?> testingClass = expectation.getMethod().getDeclaringClass();
-            Object testingObject = initializeTestingObject(testingClass);
-            Object event = null;
-            Class<?> observedEventClass = expectation.getObservedEventClass();
-            try {
-                event = textMessage.getBody(observedEventClass);
-            } catch (JMSException e) {
-                log.warn("Campaign {} encounters issue deserializing event {} ", this.campaign.getId(), observedEventClass.getName(), e);
+
+        @Override
+        public void onMessage(Message message) {
+            if (!(message instanceof TextMessage)) {
+                return;
             }
-            assertExpectationOfTestcase(testingObject, expectation, event);
+            TextMessage textMessage = (TextMessage) message;
+            for (Expectation expectation : expectations) {
+                Class<?> testingClass = expectation.getMethod().getDeclaringClass();
+                Object testingObject = initializeTestingObject(testingClass);
+                Object event = null;
+                Class<?> observedEventClass = expectation.getObservedEventClass();
+                try {
+                    event = objectMapper.readValue(textMessage.getText(), observedEventClass);
+                } catch (Exception e) {
+                    log.warn("Campaign {} encounters issue deserializing event {} ", campaign.getId(), observedEventClass.getName(), e);
+                }
+                assertExpectationOfTestcase(testingObject, expectation, event);
+            }
         }
-    }
 
-    private Object initializeTestingObject(Class<?> testingClass) {
-        Object testingObject;
-        try {
-            testingObject = testingClass.newInstance();
-        } catch (InstantiationException e) {
-            throw new RuntimeException("Exception occurs constructing instance of " + testingClass, e);
-        } catch (IllegalAccessException e) {
-            // This must not happen because it should be validated when extracting metadata from source code.
-            this.testcaseResultRepository.updateStatus(
-                    campaign.getId(),
-                    Testcase.extractTestcase(testingClass).getId(),
-                    TestcaseResult.Status.toPersistedModel(TestcaseResult.Status.FAILED));
-            throw new RuntimeException(
-                    "Cannot construct instance of " + testingClass
-                            + " because there is no public no-argument constructor",
-                    e);
+        private Object initializeTestingObject(Class<?> testingClass) {
+            Object testingObject;
+            try {
+                testingObject = testingClass.newInstance();
+            } catch (InstantiationException e) {
+                throw new RuntimeException("Exception occurs constructing instance of " + testingClass, e);
+            } catch (IllegalAccessException e) {
+                // This must not happen because it should be validated when extracting metadata from source code.
+                testcaseResultRepository.updateStatus(
+                        campaign.getId(),
+                        Testcase.extractTestcase(testingClass).getId(),
+                        TestcaseResult.Status.toPersistedModel(TestcaseResult.Status.FAILED));
+                throw new RuntimeException(
+                        "Cannot construct instance of " + testingClass
+                                + " because there is no public no-argument constructor",
+                        e);
+            }
+            return testingObject;
         }
-        return testingObject;
-    }
 
-    private void assertExpectationOfTestcase(Object testingObject,  Expectation expectation, Object event) {
-        try {
-            expectation.getMethod().invoke(testingObject, event);
-        } catch (InvocationTargetException e) {
-            // For any exception occurring during asserting, the expectations is considered not-met.
-            // TODO Treat the assertion fail exception different with runtime exception
-        } catch (IllegalAccessException e) {
-            // This must not happen because it should be validated when extracting metadata from source code.
-            throw new RuntimeException("Cannot invoke precondition "
-                    + expectation.getMethod().getDeclaringClass().getName() + "#"
-                    + expectation.getMethod().getName()
-                    + "(" + Arrays.stream(expectation.getMethod().getParameterTypes()).map(Class::getName).collect(Collectors.joining(",")) + ")",
-                    e);
+        private void assertExpectationOfTestcase(Object testingObject,  Expectation expectation, Object event) {
+            try {
+                expectation.getMethod().invoke(testingObject, event);
+            } catch (InvocationTargetException e) {
+                // For any exception occurring during asserting, the expectations is considered not-met.
+                // TODO Treat the assertion fail exception different with runtime exception
+            } catch (IllegalAccessException e) {
+                // This must not happen because it should be validated when extracting metadata from source code.
+                throw new RuntimeException("Cannot invoke precondition "
+                        + expectation.getMethod().getDeclaringClass().getName() + "#"
+                        + expectation.getMethod().getName()
+                        + "(" + Arrays.stream(expectation.getMethod().getParameterTypes()).map(Class::getName).collect(Collectors.joining(",")) + ")",
+                        e);
+            }
+
+            testcaseResultRepository.updateExpectationStatus(
+                    this.campaign.getId(), expectation.getTestcase().getId(), expectation.getKey(),
+                    ttrang2301.asynctesting.persistence.TestcaseResult.Expectation.Status.SUCCESSFUL);
         }
-        this.testcaseResultRepository.updateExpectationStatus(
-                this.campaign.getId(), expectation.getTestcase().getId(), expectation.getKey(),
-                ttrang2301.asynctesting.persistence.TestcaseResult.Expectation.Status.SUCCESSFUL);
     }
 }
