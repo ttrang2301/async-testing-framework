@@ -26,8 +26,11 @@ public class TestcaseResult {
     private Status status;
 
     public static final ttrang2301.asynctesting.persistence.TestcaseResult toPersistedModel(TestcaseResult model) {
-        // TODO
-        return null;
+        return new ttrang2301.asynctesting.persistence.TestcaseResult(
+                model.getCampaignId(), model.getTestId(),
+                model.getCompletionPoints().stream().map(CompletionPoint::toPersistedModel).collect(Collectors.toList()),
+                TestcaseResult.Status.toPersistedModel(model.getStatus())
+        );
     }
 
     public static List<TestcaseResult> extractInitialTestcaseResults(
@@ -41,9 +44,10 @@ public class TestcaseResult {
     private static TestcaseResult toInitialTestResult(Campaign campaign, Class<?> testingClass) {
         List<CompletionPoint> completionPoints =  Arrays.stream(testingClass.getDeclaredMethods())
                 .filter(method -> method.getAnnotation(ttrang2301.asynctesting.annotation.Expectation.class) != null)
-                .map(method -> method.getParameters()[0])
-                .map(Parameter::getType)
-                .map(eventClass -> new CompletionPoint(eventClass.getName(), false))
+                .map(method ->
+                        new CompletionPoint(
+                                method.getAnnotation(ttrang2301.asynctesting.annotation.Expectation.class).key(),
+                                false))
                 .collect(Collectors.toList());
         return new TestcaseResult(
                 campaign.getId(),
@@ -60,9 +64,19 @@ public class TestcaseResult {
             this.value = value;
         }
 
-        public static ttrang2301.asynctesting.persistence.TestcaseResult.Status toPersistedModel(Status preconditionsReady) {
-            // TODO
-            return null;
+        public static ttrang2301.asynctesting.persistence.TestcaseResult.Status toPersistedModel(Status testcaseResultStatus) {
+            switch (testcaseResultStatus) {
+                case INITIALIZED:
+                    return ttrang2301.asynctesting.persistence.TestcaseResult.Status.INITIALIZED;
+                case PRECONDITIONS_READY:
+                    return ttrang2301.asynctesting.persistence.TestcaseResult.Status.PRECONDITIONS_READY;
+                case SUCCESSFUL:
+                    return ttrang2301.asynctesting.persistence.TestcaseResult.Status.SUCCESSFUL;
+                case FAILED:
+                    return ttrang2301.asynctesting.persistence.TestcaseResult.Status.FAILED;
+                    default:
+                        throw new RuntimeException("Not supported Status " + testcaseResultStatus);
+            }
         }
 
         public String getValue() {

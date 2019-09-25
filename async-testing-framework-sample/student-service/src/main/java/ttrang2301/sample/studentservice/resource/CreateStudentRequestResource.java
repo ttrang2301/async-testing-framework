@@ -33,14 +33,14 @@ public class CreateStudentRequestResource {
     private JmsTemplate jmsTemplate;
 
     @PostMapping
-    public ResponseEntity<String> createCreateStudentRequest(@RequestBody CreateStudentForm form) {
+    public ResponseEntity<CreateStudentRequestId> createCreateStudentRequest(@RequestBody CreateStudentForm form) {
         String requestId = UUID.randomUUID().toString();
         CreateStudentRequest request = new CreateStudentRequest(requestId, form, 0, null);
         requestRepository.save(new ttrang2301.sample.studentservice.model.CreateStudentRequest(requestId, form.getStudentName(), 0, null));
         ExecutorService executor = Executors.newSingleThreadExecutor();
         executor.submit(new StudentResource.CreateStudentRunnable(requestRepository, studentRepository, jmsTemplate, request));
         jmsTemplate.convertAndSend(new ActiveMQTopic(CREATE_STUDENT_REQUEST_CREATED_EVENT_NAME), request);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(requestId);
+        return ResponseEntity.status(HttpStatus.ACCEPTED).body(new CreateStudentRequestId(requestId));
     }
 
     @GetMapping("/{id}")
@@ -75,6 +75,15 @@ public class CreateStudentRequestResource {
     public static final class CreateStudentForm {
 
         private String studentName;
+
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static final class CreateStudentRequestId {
+
+        private String requestId;
 
     }
 
