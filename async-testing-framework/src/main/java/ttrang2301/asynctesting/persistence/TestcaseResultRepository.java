@@ -15,5 +15,7 @@ public interface TestcaseResultRepository {
 
     void updateStatus(String campaignId, String testcaseId, TestcaseResult.Status status);
 
-    void updateExpectationStatus(String campaignId, String testcaseId, String expectationKey, TestcaseResult.Expectation.Status status);
+    void updateExpectationStatus(String campaignId, String testcaseId, String expectationKey, TestcaseResult.CompletionPoint.Status status);
+
+    List<TestcaseResult> findAllByCampaignIdAndStatusReady(String campaignId);
 }

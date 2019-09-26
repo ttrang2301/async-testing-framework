@@ -16,12 +16,12 @@ public class CompletionPoint {
     private String name;
     private boolean result;
 
-    public static final ttrang2301.asynctesting.persistence.TestcaseResult.Expectation toPersistedModel(CompletionPoint completionPoint) {
-        return new ttrang2301.asynctesting.persistence.TestcaseResult.Expectation(
+    public static final TestcaseResult.CompletionPoint toPersistedModel(CompletionPoint completionPoint) {
+        return new TestcaseResult.CompletionPoint(
                 completionPoint.getName(),
                 completionPoint.isResult()
-                        ? TestcaseResult.Expectation.Status.SUCCESSFUL
-                        : TestcaseResult.Expectation.Status.UNKNOWN
+                        ? TestcaseResult.CompletionPoint.Status.SUCCESSFUL
+                        : TestcaseResult.CompletionPoint.Status.UNKNOWN
         );
     }
 

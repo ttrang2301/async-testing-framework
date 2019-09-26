@@ -6,12 +6,10 @@
 package ttrang2301.asynctesting;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.activemq.ActiveMQConnectionFactory;
 
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -121,7 +119,7 @@ public class ActiveMqEventConsumer implements Runnable {
             try {
                 expectation.getMethod().invoke(testingObject, event);
             } catch (InvocationTargetException e) {
-                // For any exception occurring during asserting, the expectations is considered not-met.
+                // For any exception occurring during asserting, the completionPoints is considered not-met.
                 // TODO Treat the assertion fail exception different with runtime exception
             } catch (IllegalAccessException e) {
                 // This must not happen because it should be validated when extracting metadata from source code.
@@ -134,7 +132,7 @@ public class ActiveMqEventConsumer implements Runnable {
 
             testcaseResultRepository.updateExpectationStatus(
                     this.campaign.getId(), expectation.getTestcase().getId(), expectation.getKey(),
-                    ttrang2301.asynctesting.persistence.TestcaseResult.Expectation.Status.SUCCESSFUL);
+                    ttrang2301.asynctesting.persistence.TestcaseResult.CompletionPoint.Status.SUCCESSFUL);
         }
     }
 }
