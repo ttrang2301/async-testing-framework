@@ -8,7 +8,7 @@ public class TestcaseResultMongoRepositoryTest {
     @Test
     public void test() {
         new TestcaseResultMongoRepository().updateExpectationStatus(
-                "campaign 2", "test 3", "expect3", TestcaseResult.Expectation.Status.UNKNOWN);
+                "campaign 2", "test 3", "expect3", TestcaseResult.CompletionPoint.Status.UNKNOWN);
     }
 
 }

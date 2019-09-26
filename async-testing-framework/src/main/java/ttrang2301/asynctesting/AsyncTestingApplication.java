@@ -2,6 +2,7 @@ package ttrang2301.asynctesting;
 
 import lombok.extern.slf4j.Slf4j;
 import ttrang2301.asynctesting.expectations.Expectation;
+import ttrang2301.asynctesting.expectations.PeriodicallyExpectationScanningService;
 import ttrang2301.asynctesting.persistence.TestcaseResultMongoRepository;
 import ttrang2301.asynctesting.persistence.TestcaseResultRepository;
 import ttrang2301.asynctesting.preconditions.Precondition;
@@ -56,10 +57,12 @@ public class AsyncTestingApplication {
         AsyncTestingApplication application = new AsyncTestingApplication(
                 mainClass,
                 // TODO dependency injection
-                new CreatePreconditionService(repository), new InitializeTestcaseService(repository), "tcp://localhost:61616", repository);
+                new CreatePreconditionService(repository), new InitializeTestcaseService(repository),
+                "tcp://localhost:61616", repository);
         application.initializeTestcaseResultDatabase();
         application.createPreconditions();
         application.subscribeToSystemEvents();
+        application.startExpectationScanningService();
     }
 
     private void initializeTestcaseResultDatabase() {
@@ -68,6 +71,12 @@ public class AsyncTestingApplication {
 
     private void createPreconditions() {
         createPreconditionService.createPreconditions(this.campaign, this.preconditionsByTestcase);
+    }
+
+    private void startExpectationScanningService() {
+        PeriodicallyExpectationScanningService scanningService =
+                new PeriodicallyExpectationScanningService(campaign.getId(), testcaseResultRepository);
+        thread(scanningService, false);
     }
 
     private void subscribeToSystemEvents() {

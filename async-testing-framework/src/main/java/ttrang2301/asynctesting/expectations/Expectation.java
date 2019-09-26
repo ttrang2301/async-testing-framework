@@ -63,8 +63,8 @@ public class Expectation {
     /**
      * Validate:
      * <ul>
-     *     <li>Expectation method must contain 1 and only 1 argument.</li>
-     *     <li>Expectation method must be public.</li>
+     *     <li>CompletionPoint method must contain 1 and only 1 argument.</li>
+     *     <li>CompletionPoint method must be public.</li>
      * </ul>
      * @param expectations
      * @throws InvalidMetadataException
