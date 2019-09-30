@@ -51,7 +51,7 @@ public class ActiveMqEventConsumer implements Runnable {
             Connection connection = new ActiveMQConnectionFactory(connectionUrl).createConnection();
             Session session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
             connection.start();
-            Queue queueA = session.createQueue("Consumer.YS.VirtualTopic." + topicName);
+            Queue queueA = session.createQueue("Consumer.YellowSubmarines.VirtualTopic." + topicName);
             VirtualMessageListener listenerA1 = new VirtualMessageListener(campaign, expectations, testcaseResultRepository);
             MessageConsumer consumerA1 = session.createConsumer(queueA);
             consumerA1.setMessageListener(listenerA1);
