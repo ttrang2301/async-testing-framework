@@ -15,8 +15,8 @@ import ttrang2301.asynctesting.annotation.Expectation;
 import ttrang2301.asynctesting.annotation.Precondition;
 
 @Slf4j
-@AsyncTest(name = "DeviceHardwareTest1")
-public class TestCase1 {
+@AsyncTest(name = "DeviceHardware_Report_Group_Test_1")
+public class DeviceHardwareTestCase1 {
 
     @Precondition
     public void prepareCondition() {
