@@ -58,7 +58,9 @@ public class AsyncTestingApplication {
                 mainClass,
                 // TODO dependency injection
                 new CreatePreconditionService(repository), new InitializeTestcaseService(repository),
-                "tcp://localhost:61616", repository);
+                "tcp://localhost:61616",
+//                /* dv2corp3 activemq url */ "tcp://dv2corp3-esb1.dv.absoprde.com:61616",
+                repository);
         application.initializeTestcaseResultDatabase();
         application.createPreconditions();
         application.subscribeToSystemEvents();

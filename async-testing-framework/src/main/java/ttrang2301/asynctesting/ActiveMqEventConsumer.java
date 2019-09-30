@@ -77,17 +77,35 @@ public class ActiveMqEventConsumer implements Runnable {
 
         @Override
         public void onMessage(Message message) {
-            if (!(message instanceof TextMessage)) {
+            String content;
+            try {
+                if (message instanceof TextMessage) {
+                    TextMessage textMessage = (TextMessage) message;
+                    content = textMessage.getText();
+                } else if (message instanceof BytesMessage) {
+                    BytesMessage byteMessage = (BytesMessage) message;
+                    byte[] byteData = new byte[(int) byteMessage.getBodyLength()];
+                    byteMessage.readBytes(byteData);
+                    content = new String(byteData);
+                } else {
+                    log.warn("Campaign {} encounters issue with deserializing message. Expect {} or {}. Actual {}. ",
+                            campaign.getId(),
+                            TextMessage.class.getName(), BytesMessage.class.getName(),
+                            message.getClass().getName());
+                    return;
+                }
+            } catch (Exception e) {
+                log.warn("Campaign {} encounters issue with deserializing message.",
+                        e);
                 return;
             }
-            TextMessage textMessage = (TextMessage) message;
             for (Expectation expectation : expectations) {
                 Class<?> testingClass = expectation.getMethod().getDeclaringClass();
                 Object testingObject = initializeTestingObject(testingClass);
                 Object event = null;
                 Class<?> observedEventClass = expectation.getObservedEventClass();
                 try {
-                    event = objectMapper.readValue(textMessage.getText(), observedEventClass);
+                    event = objectMapper.readValue(content, observedEventClass);
                 } catch (Exception e) {
                     log.warn("Campaign {} encounters issue deserializing event {} ", campaign.getId(), observedEventClass.getName(), e);
                 }
