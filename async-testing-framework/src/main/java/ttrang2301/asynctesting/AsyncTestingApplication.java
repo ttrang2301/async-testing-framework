@@ -1,5 +1,9 @@
 package ttrang2301.asynctesting;
 
+import org.slf4j.LoggerFactory;
+
+import ch.qos.logback.classic.Level;
+import ch.qos.logback.classic.Logger;
 import lombok.extern.slf4j.Slf4j;
 import ttrang2301.asynctesting.expectations.Expectation;
 import ttrang2301.asynctesting.expectations.PeriodicallyExpectationScanningService;
@@ -52,14 +56,19 @@ public class AsyncTestingApplication {
     }
 
     public static void run(Class<?> mainClass, String[] args) {
+        // JUST FOR DEMONSTRATION
+        Logger root = (Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+        root.setLevel(Level.INFO);
+        ///////////////////////////
+
         TestcaseResultMongoRepository repository =
                 new TestcaseResultMongoRepository();
         AsyncTestingApplication application = new AsyncTestingApplication(
                 mainClass,
                 // TODO dependency injection
                 new CreatePreconditionService(repository), new InitializeTestcaseService(repository),
-                "tcp://localhost:61616",
-//                /* dv2corp3 activemq url */ "tcp://dv2corp3-esb1.dv.absoprde.com:61616",
+//                "tcp://localhost:61616",
+                /* dv2corp3 activemq url */ "tcp://dv2corp3-esb1.dv.absoprde.com:61616",
                 repository);
         application.initializeTestcaseResultDatabase();
         application.createPreconditions();

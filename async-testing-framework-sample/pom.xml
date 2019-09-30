@@ -12,6 +12,7 @@
     <modules>
         <module>student-service</module>
         <module>student-service-test</module>
+        <module>hardware-report-group-test</module>
     </modules>
 
 </project>
