@@ -1,5 +1,10 @@
 package asynctesting.hardware.case1;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import com.absolute.qa.automation.core.exception.AutomationException;
 import com.absolute.qa.automation.core.utils.FileUtil;
 import com.absolute.qa.automation.testmanagement.testobjects.UserAndDeviceInfo;
@@ -17,36 +22,64 @@ import lombok.extern.slf4j.Slf4j;
 import ttrang2301.asynctesting.annotation.AsyncTest;
 import ttrang2301.asynctesting.annotation.Expectation;
 import ttrang2301.asynctesting.annotation.Precondition;
+import ttrang2301.asynctesting.exception.IgnoredEventException;
 
 @Slf4j
-@AsyncTest(name = "DeviceHardware_Report_Group_Test_1")
+@AsyncTest(name = "DeviceHardware_Report_Group_Test_5")
 public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
+
+    private UserAndDeviceInfo getDevice() {
+        sampleDevice = new UserAndDeviceInfo();
+        sampleDevice.setAccountUid("afdf6dbb-cf70-4739-889e-1802f962cfdf");
+        sampleDevice.setEsn("2DFXLJ8C0RAA00SL0041");
+        sampleDevice.setDeviceUid("352a883d-b02f-4a07-92bc-5704f4547d50");
+        sampleDevice.setOsType(UserAndDeviceInfo.OsType.Windows);
+        sampleDevice.setAgentStatus(UserAndDeviceInfo.AgentStatus.Active);
+        sampleDevice.setGenerateToken(false);
+        return sampleDevice;
+    }
 
     @Precondition
     public void prepareCondition() throws AutomationException {
         log.info("DEMO_HACKATHON: Enter @Precondition prepareCondition method.");
-        prepareTestCaseData();
+        sampleDevice = getDevice();
         File temporaryZipFile = createTemporaryZipFile(sampleDevice.getEsn());
         FileUtil.zipSingleFile(getSamplePayload(),temporaryZipFile);
-        hdpServiceAPI.uploadDeviceHdpData(sampleDevice,temporaryZipFile);
+        uploadDeviceHdpData(sampleDevice,temporaryZipFile);
         deleteAllTemporaryFiles();
     }
 
     @Expectation(key = "verifyDeviceHardwareChangeMessage", eventName = "hw-canonical-inbound")
     public void assertDeviceHardwareMessageOut(DeviceHardwareChangeDTO event) throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(event);
+        if (!event.getCurrentDeviceHardware().getDeviceUid().equals(sampleDevice.getDeviceUid())) {
+            throw new IgnoredEventException();
+        }
 
-        log.info("DEMO_HACKATHON: Enter @Expectation assertDeviceHardwareMessageOut method. " +
-                "Listening from 'hw-canonical-inbound' topic. " +
-                "Value of DeviceHardwareChangeDTO argument: " +
-                json);
+        String prettyJsonString = toPrettyJson(event);
+        log.info("DEMO_HACKATHON: Enter @Expectation method. " + "\n" +
+                "Listening from 'hw-canonical-inbound' topic. " + "\n" +
+                "Value of DeviceHardwareChangeDTO argument: " + "\n" +
+                prettyJsonString);
+    }
 
+    @Expectation(key = "verifyDeviceReportChangeMessage", eventName = "dg-hwreportdatachanged-inbound")
+    public void assertDeviceReportMessageOut(ReportDataChangedDTO event) throws JsonProcessingException {
+        if (!event.getCurrentDeviceHardware().getDeviceUid().equals(sampleDevice.getDeviceUid())) {
+            throw new IgnoredEventException();
+        }
+        String prettyJsonString = toPrettyJson(event);
+        log.info("DEMO_HACKATHON: Enter @Expectation method. " + "\n" +
+                "Listening from 'dg-hwreportdatachanged-inbound' topic. " + "\n" +
+                "Value of ReportDataChangedDTO argument: " + "\n" +
+                prettyJsonString);
 
     }
 
-    protected UserAndDeviceInfo.OsType getOSType() {
-        return UserAndDeviceInfo.OsType.Windows;
+    private String toPrettyJson(Object event) throws JsonProcessingException {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElement = jsonParser.parse((new ObjectMapper()).writeValueAsString(event));
+        return gson.toJson(jsonElement);
     }
 
     @Data
@@ -76,6 +109,17 @@ public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
         private String currentValue;
         private String previousValue;
         private String dateTime;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class ReportDataChangedDTO {
+        private String deviceId;
+        private String accountId;
+        private List<String> changedProperties;
+        private DeviceHardwareDTO currentDeviceHardware;
     }
 }
 

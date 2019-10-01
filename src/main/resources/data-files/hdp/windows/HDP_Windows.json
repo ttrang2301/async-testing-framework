@@ -1,0 +1,1243 @@
+{
+	"HWInventory":	{
+		"collectionUtc":	"2017-02-20T21:54:23Z",
+		"correlationId":	"",
+		"esn":	"",
+		"uid":	"",
+		"Inventory":	{
+			"atp":	"0",
+			"batterySerial":	"",
+			"biosLanguage":	"enUS",
+			"biosVersion":	"INTEL  - 6040000 ",
+			"biosVersiondate":	"09/21/15",
+			"computerSerial":	"VMware-56 4d 96 75 f1 95 c4 7e-59 9e 40 f1 38 f5 e9 6b",
+			"cpudatawidth":	"64",
+			"productKey":	"KRPC6-T8PJB-BPBMK-BMFK7-M4G3V",
+			"systemCpu":	"Intel(R) Xeon(R) CPU           X5650  @ 2.67GHz",
+			"tablet":	"0",
+			"tcg":	"0000",
+			"uefi":	"00",
+			"wmi":	"1"
+		},
+		"Wmi":	{
+			"Win32_Battery":	[
+				{
+					"deviceId":	" 1096Panasonic42T5225",
+					"designCapacity":	"1000",
+					"estimatedChargeRemaining":	"100",
+					"estimatedRunTime":	"71582788",
+					"expectedlife":	"10000",
+					"maxRechargeTime":	"240",
+					"name":	"42T5225",
+					"status":	"OK"
+				}
+			],
+			"Win32_BIOS":	[
+				{
+					"manufacturer":	"Phoenix Technologies LTD",
+					"releaseDate":	"2015-09-20T17:00:00Z",
+					"smBiosBiosVersion":	"6.00",
+					"smBiosMajorVersion":	"2",
+					"smBiosMinorVersion":	"4",
+					"serialNumber":	"VMware-56 4d 96 75 f1 95 c4 7e-59 9e 40 f1 38 f5 e9 6b"
+				}
+			],
+			"Win32_BaseBoard":	[
+				{
+					"serialNumber":	"None"
+				}
+			],
+			"Win32_SystemEnclosure":	[
+				{
+					"serialNumber":	"None",
+					"smBiosAssetTag":	"Asset Tag",
+					"tag":	"System Enclosure 0"
+				}
+			],
+			"Win32_CDROMDrive":	[
+				{
+					"deviceId":	"IDE\\CDROMNECVMWAR_VMWARE_IDE_CDR10_______________1.00____\\5\u0026290FD3AB\u00260\u00261.0.0",
+					"drive":	"D:",
+					"mediaType":	"DVD-ROM",
+					"name":	"NECVMWar VMware IDE CDR10 ATA Device",
+					"description":	"CD-ROM Drive",
+					"mediaLoaded":	"False",
+					"manufacturer":	"(Standard CD-ROM drives)",
+					"status":	"OK",
+					"transferRate":	"-1",
+					"scsiTargetId":	"0",
+					"pnpDeviceID":	"IDE\\CDROMNECVMWAR_VMWARE_IDE_CDR10_______________1.00____\\5\u0026290FD3AB\u00260\u00261.0.0"
+				}
+			],
+			"Win32_ComputerSystem":	[
+				{
+					"domain":	"WORKGROUP",
+					"manufacturer":	"VMware, Inc.",
+					"model":	"VMware Virtual Platform",
+					"name":	"tatata",
+					"systemType":	"x64-based PC",
+					"totalPhysicalMemory":	"4294488064",
+					"userName":	"QA-Automation"
+				}
+			],
+			"Win32_ComputerSystemProduct":	[
+				{
+					"uuid":	"75964D56-95F1-7EC4-599E-40F138F5E96B",
+					"version":	"None"
+				}
+			],
+			"Win32_DesktopMonitor":	[
+				{
+					"deviceId":	"DesktopMonitor1",
+					"monitorManufacturer":	"(Standard monitor types)",
+					"name":	"Generic Non-PnP Monitor",
+					"pnpDeviceID":	"DISPLAY\\DEFAULT_MONITOR\\4\u002631BE19FA\u00260\u0026UID0"
+				}
+			],
+			"Win32_InfraredDevice":	[
+				{
+
+				}
+			],
+			"Win32_Keyboard":	[
+				{
+					"deviceId":	"ACPI\\PNP0303\\4\u002625EE97C0\u00260",
+					"description":	"Standard PS/2 Keyboard",
+					"layout":	"00000409",
+					"name":	"Enhanced (101- or 102-key)",
+					"pnpDeviceID":	"ACPI\\PNP0303\\4\u002625EE97C0\u00260",
+					"numberOfFunctionKeys":	"12"
+				}
+			],
+			"Win32_NetworkAdapter":	[
+				{
+					"deviceId":	"0",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft Kernel Debug Network Adapter",
+					"productName":	"Microsoft Kernel Debug Network Adapter",
+					"index":	"0",
+					"installed":	"True",
+					"pnpDeviceID":	"ROOT\\KDNIC\\0000",
+					"timeOfLastReset":	"2017-02-20T13:53:10Z"
+				},
+				{
+					"deviceId":	"1",
+					"adapterType":	"Ethernet 802.3",
+					"macAddress":	"00:0C:29:F5:E9:6B",
+					"manufacturer":	"Intel Corporation",
+					"name":	"Intel(R) 82574L Gigabit Network Connection",
+					"productName":	"Intel(R) 82574L Gigabit Network Connection",
+					"speed":	"1000000000",
+					"index":	"1",
+					"installed":	"True",
+					"pnpDeviceID":	"PCI\\VEN_8086\u0026DEV_10D3\u0026SUBSYS_07D015AD\u0026REV_00\\000C29FFFFF5E96B00",
+					"timeOfLastReset":	"2017-02-20T13:53:10Z"
+				},
+				{
+					"deviceId":	"2",
+					"adapterType":	"Tunnel",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft ISATAP Adapter",
+					"productName":	"Microsoft ISATAP Adapter",
+					"speed":	"100000",
+					"index":	"2",
+					"installed":	"True",
+					"pnpDeviceID":	"SWD\\IP_TUNNEL_VBUS\\ISATAP_0",
+					"timeOfLastReset":	"2017-02-20T13:53:10Z"
+				}
+			],
+			"Win32_NetworkAdapterConfiguration":	[
+				{
+					"description":	"Microsoft Kernel Debug Network Adapter",
+					"dhcpEnabled":	"True",
+					"serviceName":	"kdnic",
+					"index":	"0",
+					"interfaceIndex":	"2"
+				},
+				{
+					"description":	"Intel(R) 82574L Gigabit Network Connection",
+					"dhcpEnabled":	"True",
+					"dhcpLeaseExpires":	"2017-02-28T13:53:25Z",
+					"dhcpLeaseObtained":	"2017-02-20T13:53:25Z",
+					"macAddress":	"00:0C:29:F5:E9:6B",
+					"dhcpServer":	"172.16.2.7",
+					"dnsHostName":	"DESKTOP-86HA81Q",
+					"ipAddress":	"172.16.13.11, fe80::d9a7:14ad:c1a8:ae69",
+					"ipSubnet":	"255.255.0.0, 64",
+					"defaultIPGateway":	"172.16.1.5",
+					"serviceName":	"e1iexpress",
+					"index":	"1",
+					"interfaceIndex":	"4"
+				},
+				{
+					"description":	"Microsoft ISATAP Adapter",
+					"dhcpEnabled":	"False",
+					"serviceName":	"tunnel",
+					"index":	"2",
+					"interfaceIndex":	"3"
+				}
+			],
+			"Win32_OperatingSystem":	[
+				{
+					"bootDevice":	"\\Device\\HarddiskVolume1",
+					"buildNumber":	"14393",
+					"caption":	"Microsoft Windows 10 Home",
+					"csdVersion":	"1.0",
+					"freePhysicalMemory":	"3149868",
+					"freeVirtualMemory":	"4703392",
+					"installDate":	"2017-02-14T11:18:32Z",
+					"lastBootUpTime":	"2017-02-20T13:53:10Z",
+					"locale":	"0409,English (United States)",
+					"manufacturer":	"Microsoft Corporation",
+					"osArchitecture":	"64-bit",
+					"serialNumber":	"00326-10101-26688-AA746",
+					"systemDirectory":	"C:\\WINDOWS\\system32",
+					"totalVirtualMemorySize":	"5635628",
+					"windowsDirectory":	"C:\\WINDOWS",
+					"version":	"10.0.14393",
+					"otherTypeDescription":	"NA"
+				}
+			],
+			"Win32_PageFileUsage":	[
+				{
+					"name":	"C:\\pagefile.sys",
+					"allocatedBaseSize":	"1408",
+					"currentUsage":	"0"
+				}
+			],
+			"Win32_PhysicalMemory":	[
+				{
+					"capacity":	"4294967296",
+					"deviceLocator":	"RAM slot #0",
+					"typeDetail":	"512",
+					"tag":	"Physical Memory 0"
+				}
+			],
+			"Win32_PointingDevice":	[
+				{
+					"deviceId":	"ACPI\\PNP0F13\\4\u002625EE97C0\u00260",
+					"description":	"VMware Pointing Device",
+					"manufacturer":	"VMware, Inc.",
+					"hardwareType":	"VMware Pointing Device",
+					"numberOfButtons":	"0",
+					"status":	"OK",
+					"pnpDeviceId":	"ACPI\\PNP0F13\\4\u002625EE97C0\u00260",
+					"powerManagementSupported":	"False"
+				}
+			],
+			"Win32_Printer":	[
+				{
+					"deviceId":	"Microsoft XPS Document Writer",
+					"driverName":	"Microsoft XPS Document Writer v4",
+					"name":	"Microsoft XPS Document Writer",
+					"portName":	"PORTPROMPT:"
+				},
+				{
+					"deviceId":	"Microsoft Print to PDF",
+					"driverName":	"Microsoft Print To PDF",
+					"name":	"Microsoft Print to PDF",
+					"portName":	"PORTPROMPT:"
+				},
+				{
+					"deviceId":	"Fax",
+					"driverName":	"Microsoft Shared Fax Driver",
+					"name":	"Fax",
+					"portName":	"SHRFAX:"
+				}
+			],
+			"Win32_Processor":	[
+				{
+					"deviceId":	"CPU0",
+					"architecture":	"9",
+					"currentClockSpeed":	"2660",
+					"dataWidth":	"64",
+					"l2CacheSize":	"0",
+					"l2CacheSpeed":	"1000",
+					"l3CacheSize":	"0",
+					"l3CacheSpeed":	"0",
+					"name":	"Intel(R) Xeon(R) CPU           X5650  @ 2.67GHz",
+					"numberOfCores":	"1",
+					"numberOfLogicalProcessors":	"1"
+				}
+			],
+			"Win32_SerialPort":	[
+				{
+
+				}
+			],
+			"Win32_ParallelPort":	[
+				{
+
+				}
+			],
+			"Win32_SoundDevice":	[
+				{
+
+				}
+			],
+			"Win32_TimeZone":	[
+				{
+					"daylightName":	"Pacific Daylight Time",
+					"description":	"(UTC-08:00) Pacific Time (US \u0026 Canada)"
+				}
+			],
+			"Win32_USBController":	[
+				{
+					"deviceId":	"DeviceId",
+					"name":	"Name",
+					"description":	"Description",
+					"caption":	"Caption",
+					"manufacturer":	"Manufacturer"
+				}
+			],
+			"Win32_VideoController":	[
+				{
+					"adapterRAM":	"0",
+					"adapterDACType":	"n/a",
+					"deviceId":	"VideoController1",
+					"currentBitsPerPixel":	"32",
+					"currentHorizontalResolution":	"1280",
+					"currentVerticalResolution":	"768",
+					"currentRefreshRate":	"1",
+					"currentNumberOfColors":	"4294967296",
+					"name":	"VMware SVGA 3D",
+					"description":	"VMware SVGA 3D",
+					"driverVersion":	"8.15.1.33",
+					"caption":	"VMware SVGA 3D",
+					"adapterCompatibility":	"VMware, Inc.",
+					"infFileName":	"oem5.inf"
+				}
+			],
+			"Win32_DiskDrive":	[
+				{
+					"deviceId":	"\\\\.\\PHYSICALDRIVE0",
+					"description":	"Disk drive",
+					"firmwareRevision":	"1.0 ",
+					"index":	"0",
+					"model":	"VMware Virtual disk SCSI Disk Device",
+					"name":	"\\\\.\\PHYSICALDRIVE0",
+					"serialNumber":	"",
+					"mediatype":	"Fixed hard disk media",
+					"manufacturer":	"(Standard disk drives)",
+					"partitions":	"4",
+					"size":	"42944186880",
+					"status":	"OK",
+					"totalCylinders":	"5221",
+					"totalHeads":	"255",
+					"totalSectors":	"83875365",
+					"totalTracks":	"1331355",
+					"tracksPerCylinder":	"255",
+					"bytesPerSector":	"512",
+					"sectorsPerTrack":	"63"
+				}
+			],
+			"Win32_Volume":	[
+				{
+					"deviceId":	"\\\\?\\Volume{668b1e1c-0000-0000-0000-100000000000}\\",
+					"bootVolume":	"False",
+					"capacity":	"524283904",
+					"compressed":	"False",
+					"fileSystem":	"NTFS",
+					"freeSpace":	"146501632",
+					"name":	"\\\\?\\Volume{668b1e1c-0000-0000-0000-100000000000}\\",
+					"serialNumber":	"3422981149"
+				},
+				{
+					"deviceId":	"\\\\?\\Volume{668b1e1c-0000-0000-0000-501f00000000}\\",
+					"bootVolume":	"True",
+					"capacity":	"42423283712",
+					"compressed":	"False",
+					"driveLetter":	"C:",
+					"fileSystem":	"NTFS",
+					"freeSpace":	"18550292480",
+					"name":	"C:\\",
+					"serialNumber":	"3389544515"
+				},
+				{
+					"deviceId":	"\\\\?\\Volume{d66e9e9c-eff9-11e6-9bc1-806e6f6e6963}\\",
+					"driveLetter":	"D:",
+					"name":	"D:\\"
+				}
+			],
+			"Win32_PnPEntity":	[
+				{
+					"caption":	"Motherboard resources",
+					"description":	"Motherboard resources",
+					"deviceId":	"ACPI\\PNP0C02\\4",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"Motherboard resources",
+					"pnpDeviceID":	"ACPI\\PNP0C02\\4",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft AC Adapter",
+					"description":	"Microsoft AC Adapter",
+					"deviceId":	"ACPI\\ACPI0003\\1",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft AC Adapter",
+					"pnpDeviceID":	"ACPI\\ACPI0003\\1",
+					"status":	"OK"
+				},
+				{
+					"caption":	"NECVMWar VMware IDE CDR10 ATA Device",
+					"description":	"CD-ROM Drive",
+					"deviceId":	"IDE\\CDROMNECVMWAR_VMWARE_IDE_CDR10_______________1.00____\\5\u0026290FD3AB\u00260\u00261.0.0",
+					"manufacturer":	"(Standard CD-ROM drives)",
+					"name":	"NECVMWar VMware IDE CDR10 ATA Device",
+					"pnpDeviceID":	"IDE\\CDROMNECVMWAR_VMWARE_IDE_CDR10_______________1.00____\\5\u0026290FD3AB\u00260\u00261.0.0",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026A8",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026A8",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026A9",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026A9",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AA",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AA",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AB",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AB",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AC",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AC",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AD",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AD",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AE",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AE",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AF",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026AF",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B0",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B0",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B1",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B1",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B2",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B2",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B3",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B3",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B4",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B4",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B5",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B5",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B6",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B6",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B7",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B7",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B8",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B8",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B9",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026B9",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BA",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BA",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BB",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BB",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BC",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BC",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BD",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BD",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BE",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BE",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BF",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026BF",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C0",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C0",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C1",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C1",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C2",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C2",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C3",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C3",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C4",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C4",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C5",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C5",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C6",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C6",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Express Root Port",
+					"description":	"PCI Express Root Port",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C7",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Express Root Port",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_07A0\u0026SUBSYS_07A015AD\u0026REV_01\\3\u002618D45AA6\u00260\u0026C7",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Root Print Queue",
+					"description":	"Local Print Queue",
+					"deviceId":	"SWD\\PRINTENUM\\PRINTQUEUES",
+					"manufacturer":	"Microsoft",
+					"name":	"Root Print Queue",
+					"pnpDeviceID":	"SWD\\PRINTENUM\\PRINTQUEUES",
+					"status":	"OK"
+				},
+				{
+					"caption":	"System timer",
+					"description":	"System timer",
+					"deviceId":	"ACPI\\PNP0100\\4\u002625EE97C0\u00260",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"System timer",
+					"pnpDeviceID":	"ACPI\\PNP0100\\4\u002625EE97C0\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Volume Manager",
+					"description":	"Volume Manager",
+					"deviceId":	"ROOT\\VOLMGR\\0000",
+					"manufacturer":	"Microsoft",
+					"name":	"Volume Manager",
+					"pnpDeviceID":	"ROOT\\VOLMGR\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI Bus",
+					"description":	"PCI Bus",
+					"deviceId":	"ACPI\\PNP0A03\\2\u0026DABA3FF\u00261",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI Bus",
+					"pnpDeviceID":	"ACPI\\PNP0A03\\2\u0026DABA3FF\u00261",
+					"status":	"OK"
+				},
+				{
+					"caption":	"ATA Channel 0",
+					"description":	"IDE Channel",
+					"deviceId":	"PCIIDE\\IDECHANNEL\\4\u002639EC5D8A\u00260\u00260",
+					"manufacturer":	"(Standard IDE ATA/ATAPI controllers)",
+					"name":	"ATA Channel 0",
+					"pnpDeviceID":	"PCIIDE\\IDECHANNEL\\4\u002639EC5D8A\u00260\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"ATA Channel 1",
+					"description":	"IDE Channel",
+					"deviceId":	"PCIIDE\\IDECHANNEL\\4\u002639EC5D8A\u00260\u00261",
+					"manufacturer":	"(Standard IDE ATA/ATAPI controllers)",
+					"name":	"ATA Channel 1",
+					"pnpDeviceID":	"PCIIDE\\IDECHANNEL\\4\u002639EC5D8A\u00260\u00261",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft Hyper-V Generation Counter",
+					"description":	"Microsoft Hyper-V Generation Counter",
+					"deviceId":	"ACPI\\VMW0001\\7",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft Hyper-V Generation Counter",
+					"pnpDeviceID":	"ACPI\\VMW0001\\7",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft Basic Display Driver",
+					"description":	"Microsoft Basic Display Driver",
+					"deviceId":	"ROOT\\BASICDISPLAY\\0000",
+					"manufacturer":	"(Standard display types)",
+					"name":	"Microsoft Basic Display Driver",
+					"pnpDeviceID":	"ROOT\\BASICDISPLAY\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Floppy disk drive",
+					"description":	"Floppy disk drive",
+					"deviceId":	"FDC\\GENERIC_FLOPPY_DRIVE\\6\u00262BC13940\u00260\u00260",
+					"manufacturer":	"(Standard floppy disk drives)",
+					"name":	"Floppy disk drive",
+					"pnpDeviceID":	"FDC\\GENERIC_FLOPPY_DRIVE\\6\u00262BC13940\u00260\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft IPv4 IPv6 Transition Adapter Bus",
+					"description":	"Generic software device",
+					"deviceId":	"SWD\\IP_TUNNEL_VBUS\\IP_TUNNEL_DEVICE_ROOT",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft IPv4 IPv6 Transition Adapter Bus",
+					"pnpDeviceID":	"SWD\\IP_TUNNEL_VBUS\\IP_TUNNEL_DEVICE_ROOT",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Generic Bus",
+					"description":	"Generic Bus",
+					"deviceId":	"ACPI\\PNP0A05\\4\u002625EE97C0\u00260",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"Generic Bus",
+					"pnpDeviceID":	"ACPI\\PNP0A05\\4\u002625EE97C0\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Composite Bus Enumerator",
+					"description":	"Composite Bus Enumerator",
+					"deviceId":	"ROOT\\COMPOSITEBUS\\0000",
+					"manufacturer":	"Microsoft",
+					"name":	"Composite Bus Enumerator",
+					"pnpDeviceID":	"ROOT\\COMPOSITEBUS\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft Virtual Drive Enumerator",
+					"description":	"Microsoft Virtual Drive Enumerator",
+					"deviceId":	"ROOT\\VDRVROOT\\0000",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft Virtual Drive Enumerator",
+					"pnpDeviceID":	"ROOT\\VDRVROOT\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft ISATAP Adapter",
+					"description":	"Microsoft ISATAP Adapter",
+					"deviceId":	"SWD\\IP_TUNNEL_VBUS\\ISATAP_0",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft ISATAP Adapter",
+					"pnpDeviceID":	"SWD\\IP_TUNNEL_VBUS\\ISATAP_0",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft Storage Spaces Controller",
+					"description":	"Microsoft Storage Spaces Controller",
+					"deviceId":	"ROOT\\SPACEPORT\\0000",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft Storage Spaces Controller",
+					"pnpDeviceID":	"ROOT\\SPACEPORT\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft Kernel Debug Network Adapter",
+					"description":	"Microsoft Kernel Debug Network Adapter",
+					"deviceId":	"ROOT\\KDNIC\\0000",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft Kernel Debug Network Adapter",
+					"pnpDeviceID":	"ROOT\\KDNIC\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"LSI Adapter, SAS 3000 series, 8-port with 1068",
+					"description":	"LSI Adapter, SAS 3000 series, 8-port with 1068",
+					"deviceId":	"PCI\\VEN_1000\u0026DEV_0054\u0026SUBSYS_197615AD\u0026REV_01\\4\u00262732702B\u00260\u002600A8",
+					"manufacturer":	"LSI",
+					"name":	"LSI Adapter, SAS 3000 series, 8-port with 1068",
+					"pnpDeviceID":	"PCI\\VEN_1000\u0026DEV_0054\u0026SUBSYS_197615AD\u0026REV_01\\4\u00262732702B\u00260\u002600A8",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Intel(R) 82574L Gigabit Network Connection",
+					"description":	"Intel(R) 82574L Gigabit Network Connection",
+					"deviceId":	"PCI\\VEN_8086\u0026DEV_10D3\u0026SUBSYS_07D015AD\u0026REV_00\\000C29FFFFF5E96B00",
+					"manufacturer":	"Intel Corporation",
+					"name":	"Intel(R) 82574L Gigabit Network Connection",
+					"pnpDeviceID":	"PCI\\VEN_8086\u0026DEV_10D3\u0026SUBSYS_07D015AD\u0026REV_00\\000C29FFFFF5E96B00",
+					"status":	"OK"
+				},
+				{
+					"caption":	"VMware Pointing Device",
+					"description":	"VMware Pointing Device",
+					"deviceId":	"ACPI\\PNP0F13\\4\u002625EE97C0\u00260",
+					"manufacturer":	"VMware, Inc.",
+					"name":	"VMware Pointing Device",
+					"pnpDeviceID":	"ACPI\\PNP0F13\\4\u002625EE97C0\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Volume",
+					"description":	"Volume",
+					"deviceId":	"STORAGE\\VOLUME\\{D66E9E8F-EFF9-11E6-9BC1-806E6F6E6963}#0000000000100000",
+					"manufacturer":	"Microsoft",
+					"name":	"Volume",
+					"pnpDeviceID":	"STORAGE\\VOLUME\\{D66E9E8F-EFF9-11E6-9BC1-806E6F6E6963}#0000000000100000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"High precision event timer",
+					"description":	"High precision event timer",
+					"deviceId":	"ACPI\\PNP0103\\4\u002625EE97C0\u00260",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"High precision event timer",
+					"pnpDeviceID":	"ACPI\\PNP0103\\4\u002625EE97C0\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"UMBus Root Bus Enumerator",
+					"description":	"UMBus Root Bus Enumerator",
+					"deviceId":	"ROOT\\UMBUS\\0000",
+					"manufacturer":	"Microsoft",
+					"name":	"UMBus Root Bus Enumerator",
+					"pnpDeviceID":	"ROOT\\UMBUS\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"VMware Virtual disk SCSI Disk Device",
+					"description":	"Disk drive",
+					"deviceId":	"SCSI\\DISK\u0026VEN_VMWARE\u0026PROD_VIRTUAL_DISK\\5\u00261982005\u00260\u0026000000",
+					"manufacturer":	"(Standard disk drives)",
+					"name":	"VMware Virtual disk SCSI Disk Device",
+					"pnpDeviceID":	"SCSI\\DISK\u0026VEN_VMWARE\u0026PROD_VIRTUAL_DISK\\5\u00261982005\u00260\u0026000000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft Radio Device Enumeration Bus",
+					"description":	"Generic software device",
+					"deviceId":	"SWD\\RADIO\\{3DB5895D-CC28-44B3-AD3D-6F01A782B8D2}",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft Radio Device Enumeration Bus",
+					"pnpDeviceID":	"SWD\\RADIO\\{3DB5895D-CC28-44B3-AD3D-6F01A782B8D2}",
+					"status":	"OK"
+				},
+				{
+					"caption":	"ACPI x64-based PC",
+					"description":	"ACPI x64-based PC",
+					"deviceId":	"ROOT\\ACPI_HAL\\0000",
+					"manufacturer":	"(Standard computers)",
+					"name":	"ACPI x64-based PC",
+					"pnpDeviceID":	"ROOT\\ACPI_HAL\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"System CMOS/real time clock",
+					"description":	"System CMOS/real time clock",
+					"deviceId":	"ACPI\\PNP0B00\\4\u002625EE97C0\u00260",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"System CMOS/real time clock",
+					"pnpDeviceID":	"ACPI\\PNP0B00\\4\u002625EE97C0\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI to ISA Bridge",
+					"description":	"PCI to ISA Bridge",
+					"deviceId":	"PCI\\VEN_8086\u0026DEV_7110\u0026SUBSYS_197615AD\u0026REV_08\\3\u002618D45AA6\u00260\u002638",
+					"manufacturer":	"Intel",
+					"name":	"PCI to ISA Bridge",
+					"pnpDeviceID":	"PCI\\VEN_8086\u0026DEV_7110\u0026SUBSYS_197615AD\u0026REV_08\\3\u002618D45AA6\u00260\u002638",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Standard PS/2 Keyboard",
+					"description":	"Standard PS/2 Keyboard",
+					"deviceId":	"ACPI\\PNP0303\\4\u002625EE97C0\u00260",
+					"manufacturer":	"(Standard keyboards)",
+					"name":	"Standard PS/2 Keyboard",
+					"pnpDeviceID":	"ACPI\\PNP0303\\4\u002625EE97C0\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft ACPI-Compliant System",
+					"description":	"Microsoft ACPI-Compliant System",
+					"deviceId":	"ACPI_HAL\\PNP0C08\\0",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft ACPI-Compliant System",
+					"pnpDeviceID":	"ACPI_HAL\\PNP0C08\\0",
+					"status":	"OK"
+				},
+				{
+					"deviceId":	"HTREE\\ROOT\\0",
+					"pnpDeviceID":	"HTREE\\ROOT\\0",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft Basic Render Driver",
+					"description":	"Microsoft Basic Render Driver",
+					"deviceId":	"ROOT\\BASICRENDER\\0000",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft Basic Render Driver",
+					"pnpDeviceID":	"ROOT\\BASICRENDER\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft XPS Document Writer",
+					"description":	"Local Print Queue",
+					"deviceId":	"SWD\\PRINTENUM\\{DB2EE18C-C48F-4C73-B3DB-3C742CB013BE}",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft XPS Document Writer",
+					"pnpDeviceID":	"SWD\\PRINTENUM\\{DB2EE18C-C48F-4C73-B3DB-3C742CB013BE}",
+					"status":	"OK"
+				},
+				{
+					"caption":	"ACPI Fixed Feature Button",
+					"description":	"ACPI Fixed Feature Button",
+					"deviceId":	"ACPI\\FIXEDBUTTON\\2\u0026DABA3FF\u00261",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"ACPI Fixed Feature Button",
+					"pnpDeviceID":	"ACPI\\FIXEDBUTTON\\2\u0026DABA3FF\u00261",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Fax",
+					"description":	"Local Print Queue",
+					"deviceId":	"SWD\\PRINTENUM\\{C3B2F47B-F0FF-4F73-9A9E-0653F604F9FB}",
+					"manufacturer":	"Microsoft",
+					"name":	"Fax",
+					"pnpDeviceID":	"SWD\\PRINTENUM\\{C3B2F47B-F0FF-4F73-9A9E-0653F604F9FB}",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Direct memory access controller",
+					"description":	"Direct memory access controller",
+					"deviceId":	"ACPI\\PNP0200\\4\u002625EE97C0\u00260",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"Direct memory access controller",
+					"pnpDeviceID":	"ACPI\\PNP0200\\4\u002625EE97C0\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Motherboard resources",
+					"description":	"Motherboard resources",
+					"deviceId":	"ACPI\\PNP0C02\\1F",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"Motherboard resources",
+					"pnpDeviceID":	"ACPI\\PNP0C02\\1F",
+					"status":	"OK"
+				},
+				{
+					"caption":	"CPU to PCI Bridge",
+					"description":	"CPU to PCI Bridge",
+					"deviceId":	"PCI\\VEN_8086\u0026DEV_7190\u0026SUBSYS_197615AD\u0026REV_01\\3\u002618D45AA6\u00260\u002600",
+					"manufacturer":	"Intel",
+					"name":	"CPU to PCI Bridge",
+					"pnpDeviceID":	"PCI\\VEN_8086\u0026DEV_7190\u0026SUBSYS_197615AD\u0026REV_01\\3\u002618D45AA6\u00260\u002600",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Generic Non-PnP Monitor",
+					"description":	"Generic Non-PnP Monitor",
+					"deviceId":	"DISPLAY\\DEFAULT_MONITOR\\4\u002631BE19FA\u00260\u0026UID0",
+					"manufacturer":	"(Standard monitor types)",
+					"name":	"Generic Non-PnP Monitor",
+					"pnpDeviceID":	"DISPLAY\\DEFAULT_MONITOR\\4\u002631BE19FA\u00260\u0026UID0",
+					"status":	"OK"
+				},
+				{
+					"caption":	"VMware VMCI Host Device",
+					"description":	"VMware VMCI Host Device",
+					"deviceId":	"ROOT\\VMWVMCIHOSTDEV\\0000",
+					"manufacturer":	"VMware, Inc.",
+					"name":	"VMware VMCI Host Device",
+					"pnpDeviceID":	"ROOT\\VMWVMCIHOSTDEV\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft GS Wavetable Synth",
+					"description":	"Generic software device",
+					"deviceId":	"SWD\\MMDEVAPI\\MICROSOFTGSWAVETABLESYNTH",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft GS Wavetable Synth",
+					"pnpDeviceID":	"SWD\\MMDEVAPI\\MICROSOFTGSWAVETABLESYNTH",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI-to-PCI Bridge",
+					"description":	"PCI-to-PCI Bridge",
+					"deviceId":	"PCI\\VEN_8086\u0026DEV_7191\u0026SUBSYS_00000000\u0026REV_01\\3\u002618D45AA6\u00260\u002608",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI-to-PCI Bridge",
+					"pnpDeviceID":	"PCI\\VEN_8086\u0026DEV_7191\u0026SUBSYS_00000000\u0026REV_01\\3\u002618D45AA6\u00260\u002608",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Volume",
+					"description":	"Volume",
+					"deviceId":	"STORAGE\\VOLUME\\{D66E9E8F-EFF9-11E6-9BC1-806E6F6E6963}#000000001F500000",
+					"manufacturer":	"Microsoft",
+					"name":	"Volume",
+					"pnpDeviceID":	"STORAGE\\VOLUME\\{D66E9E8F-EFF9-11E6-9BC1-806E6F6E6963}#000000001F500000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"NDIS Virtual Network Adapter Enumerator",
+					"description":	"NDIS Virtual Network Adapter Enumerator",
+					"deviceId":	"ROOT\\NDISVIRTUALBUS\\0000",
+					"manufacturer":	"Microsoft",
+					"name":	"NDIS Virtual Network Adapter Enumerator",
+					"pnpDeviceID":	"ROOT\\NDISVIRTUALBUS\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"VMware VMCI Bus Device",
+					"description":	"VMware VMCI Bus Device",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_0740\u0026SUBSYS_074015AD\u0026REV_10\\3\u002618D45AA6\u00260\u00263F",
+					"manufacturer":	"VMware, Inc.",
+					"name":	"VMware VMCI Bus Device",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_0740\u0026SUBSYS_074015AD\u0026REV_10\\3\u002618D45AA6\u00260\u00263F",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft System Management BIOS Driver",
+					"description":	"Microsoft System Management BIOS Driver",
+					"deviceId":	"ROOT\\MSSMBIOS\\0000",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"Microsoft System Management BIOS Driver",
+					"pnpDeviceID":	"ROOT\\MSSMBIOS\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Standard floppy disk controller",
+					"description":	"Standard floppy disk controller",
+					"deviceId":	"ACPI\\PNP0700\\5\u00262421EB5\u00260",
+					"manufacturer":	"(Standard floppy disk controllers)",
+					"name":	"Standard floppy disk controller",
+					"pnpDeviceID":	"ACPI\\PNP0700\\5\u00262421EB5\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"PCI-to-PCI Bridge",
+					"description":	"PCI-to-PCI Bridge",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_0790\u0026SUBSYS_079015AD\u0026REV_02\\3\u002618D45AA6\u00260\u002688",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"PCI-to-PCI Bridge",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_0790\u0026SUBSYS_079015AD\u0026REV_02\\3\u002618D45AA6\u00260\u002688",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Microsoft Print to PDF",
+					"description":	"Local Print Queue",
+					"deviceId":	"SWD\\PRINTENUM\\{D6ACC1D3-7FE3-4F10-94BB-BC7F810A58D7}",
+					"manufacturer":	"Microsoft",
+					"name":	"Microsoft Print to PDF",
+					"pnpDeviceID":	"SWD\\PRINTENUM\\{D6ACC1D3-7FE3-4F10-94BB-BC7F810A58D7}",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Intel(R) Xeon(R) CPU           X5650  @ 2.67GHz",
+					"description":	"Intel Processor",
+					"deviceId":	"ACPI\\GENUINEINTEL_-_INTEL64_FAMILY_6_MODEL_44_-_INTEL(R)_XEON(R)_CPU___________X5650__@_2.67GHZ\\_0",
+					"manufacturer":	"Intel",
+					"name":	"Intel(R) Xeon(R) CPU           X5650  @ 2.67GHz",
+					"pnpDeviceID":	"ACPI\\GENUINEINTEL_-_INTEL64_FAMILY_6_MODEL_44_-_INTEL(R)_XEON(R)_CPU___________X5650__@_2.67GHZ\\_0",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Plug and Play Software Device Enumerator",
+					"description":	"Plug and Play Software Device Enumerator",
+					"deviceId":	"ROOT\\SYSTEM\\0000",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"Plug and Play Software Device Enumerator",
+					"pnpDeviceID":	"ROOT\\SYSTEM\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"System speaker",
+					"description":	"System speaker",
+					"deviceId":	"ACPI\\PNP0800\\4\u002625EE97C0\u00260",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"System speaker",
+					"pnpDeviceID":	"ACPI\\PNP0800\\4\u002625EE97C0\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Remote Desktop Device Redirector Bus",
+					"description":	"Remote Desktop Device Redirector Bus",
+					"deviceId":	"ROOT\\RDPBUS\\0000",
+					"manufacturer":	"Microsoft",
+					"name":	"Remote Desktop Device Redirector Bus",
+					"pnpDeviceID":	"ROOT\\RDPBUS\\0000",
+					"status":	"OK"
+				},
+				{
+					"caption":	"VMware SVGA 3D",
+					"description":	"VMware SVGA 3D",
+					"deviceId":	"PCI\\VEN_15AD\u0026DEV_0405\u0026SUBSYS_040515AD\u0026REV_00\\3\u002618D45AA6\u00260\u002678",
+					"manufacturer":	"VMware, Inc.",
+					"name":	"VMware SVGA 3D",
+					"pnpDeviceID":	"PCI\\VEN_15AD\u0026DEV_0405\u0026SUBSYS_040515AD\u0026REV_00\\3\u002618D45AA6\u00260\u002678",
+					"status":	"OK"
+				},
+				{
+					"caption":	"EISA programmable interrupt controller",
+					"description":	"EISA programmable interrupt controller",
+					"deviceId":	"ACPI\\PNP0001\\4\u002625EE97C0\u00260",
+					"manufacturer":	"(Standard system devices)",
+					"name":	"EISA programmable interrupt controller",
+					"pnpDeviceID":	"ACPI\\PNP0001\\4\u002625EE97C0\u00260",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Intel(R) 82371AB/EB PCI Bus Master IDE Controller",
+					"description":	"Intel(R) 82371AB/EB PCI Bus Master IDE Controller",
+					"deviceId":	"PCI\\VEN_8086\u0026DEV_7111\u0026SUBSYS_197615AD\u0026REV_01\\3\u002618D45AA6\u00260\u002639",
+					"manufacturer":	"Intel",
+					"name":	"Intel(R) 82371AB/EB PCI Bus Master IDE Controller",
+					"pnpDeviceID":	"PCI\\VEN_8086\u0026DEV_7111\u0026SUBSYS_197615AD\u0026REV_01\\3\u002618D45AA6\u00260\u002639",
+					"status":	"OK"
+				}
+			],
+			"Win32_NetworkProtocol":	[
+				{
+					"caption":	"Hyper-V",
+					"description":	"Hyper-V RAW",
+					"name":	"Hyper-V RAW"
+				},
+				{
+					"caption":	"Tcpip",
+					"description":	"@%SystemRoot%\\system32\\tcpipcfg.dll,-50003",
+					"name":	"MSAFD Tcpip [TCP/IP]",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Tcpip",
+					"description":	"@%SystemRoot%\\system32\\tcpipcfg.dll,-50003",
+					"name":	"MSAFD Tcpip [UDP/IP]",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Tcpip",
+					"description":	"@%SystemRoot%\\system32\\tcpipcfg.dll,-50003",
+					"name":	"MSAFD Tcpip [TCP/IPv6]",
+					"status":	"OK"
+				},
+				{
+					"caption":	"Tcpip",
+					"description":	"@%SystemRoot%\\system32\\tcpipcfg.dll,-50003",
+					"name":	"MSAFD Tcpip [UDP/IPv6]",
+					"status":	"OK"
+				},
+				{
+					"caption":	"RSVP",
+					"description":	"RSVP TCPv6 Service Provider",
+					"name":	"RSVP TCPv6 Service Provider"
+				},
+				{
+					"caption":	"RSVP",
+					"description":	"RSVP TCP Service Provider",
+					"name":	"RSVP TCP Service Provider"
+				},
+				{
+					"caption":	"RSVP",
+					"description":	"RSVP UDPv6 Service Provider",
+					"name":	"RSVP UDPv6 Service Provider"
+				},
+				{
+					"caption":	"RSVP",
+					"description":	"RSVP UDP Service Provider",
+					"name":	"RSVP UDP Service Provider"
+				},
+				{
+					"caption":	"Irda",
+					"description":	"IrDA",
+					"name":	"MSAFD Irda [IrDA]",
+					"status":	"Unknown"
+				}
+			]
+		},
+		"Events":	{
+			"Network":	{
+				"publicIp":	"172.16.154.104",
+				"localIp":	"172.16.13.11"
+			}
+		},
+		"Registry":	{
+			"OSDetails":	{
+				"ubr":	"24289",
+				"currentBuild":	"7601",
+				"releaseID":	"",
+				"editionID":	"HomePremium"
+			}
+		}
+	}
+}
