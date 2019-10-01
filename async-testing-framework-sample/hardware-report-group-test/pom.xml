@@ -10,12 +10,29 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>hardware-report-group-test</artifactId>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>8</source>
+                    <target>8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 
     <dependencies>
         <dependency>
             <groupId>ttrang2301.asynctesting</groupId>
             <artifactId>async-testing-framework</artifactId>
             <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.absolute.qa.automation</groupId>
+            <artifactId>a2-mt-test-api</artifactId>
+            <version>0.0.6</version>
         </dependency>
     </dependencies>
 

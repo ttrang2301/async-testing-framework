@@ -1,0 +1,51 @@
+<TestPlan name="MT HDP Test Plan" description="">
+
+    <Properties>
+        <Property name="ProjectType" value="MT -"/>
+        <Property name="FeatureName" value="Rest Assured"/>
+        <Property name="ProductVersion" value="7.1" />
+        <Property name="BrowserType" value="CHROME" />
+        <Property name="PubishToSharepoint" value="false" />
+        <Property name="LogFileLocationPrefix" value="\\drop\tempdrop\AutomationLogFiles\NextGen\" />
+        <Property name="DefaultWaitSeconds" value="10"/>
+
+    </Properties>
+
+    <EmailInfo name="" description="" enabled="false">
+        <From>QAAutomationTest@Absolute.com</From>
+        <To>llin@absolute.com</To>
+    </EmailInfo>
+
+    <Environments>
+        <Environment name="DV2CORP3" description=""	active="false">
+            <BaseUrl>https://dv2corp3cc.absolute.com</BaseUrl>
+            <MtUrls>
+                <Url name="api" value="https://dv2corp3-f5.absolute.com" />
+                <Url name="api2" value="http://dv2corp3api2.absolute.com" />
+                <Url name="as" value="http://dv2corp3-as.dv.absolute.com" />
+                <Url name="as3" value="http://dv2corp3-as3.dv.absolute.com" />
+                <Url name="f5" value="https://dv2corp3-f5.absolute.com" />
+                <Url name="cc" value="https://dv2corp3cc.absolute.com"/>
+            </MtUrls>
+            <Accounts>
+                <Account name="PegasusTeam" description="" id="150533"
+                         uid="afdf6dbb-cf70-4739-889e-1802f962cfdf">
+                <Users>
+                    <User id="user1" name="valid user" description="Valid user of Pegasus Team. Please do not remove"
+                          username="150533@absolute.com" password="password" />
+                </Users>
+                <Devices>
+                    <Device id="device 1" name="Windows Device 1" description="valid device" esn="2DFXLJ8C0RAA00SL0038" uid="5cfa4975-11bc-4c1e-b2c4-6b38e83a1461"/>
+                    <Device id="device 2" name="Mac Device 1" description="valid device" esn="2DFXLJ8C0RAA00SL0067" uid="2696cf27-87b0-494d-8bbc-9d3d21f86fc0" platform="Mac"/>
+                    <Device id="device 3" name="Android Device 1" description="valid device" esn="2DFXLJ8C0RAA00SL0065" uid="35ffb2c5-0a0f-4b21-9291-2b0fea0e6688" platform="Android"/>
+                    <Device id="device 4" name="Chromebook Device 1" description="valid device" esn="2DFXLJ8C0RAA00SL0068" uid="3a18c7c8-000a-46b6-946a-1e2f8c5562a5" platform="Chromebook"/>
+                </Devices>
+                </Account>
+            </Accounts>
+        </Environment>
+    </Environments>
+
+    <TestSets>
+
+    </TestSets>
+</TestPlan>
