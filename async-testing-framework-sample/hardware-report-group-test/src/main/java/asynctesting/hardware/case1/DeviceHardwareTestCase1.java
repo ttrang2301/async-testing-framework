@@ -25,11 +25,11 @@ public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
     @Precondition
     public void prepareCondition() throws AutomationException {
         log.info("DEMO_HACKATHON: Enter @Precondition prepareCondition method.");
-//        prepareTestCaseData();
-//        File temporaryZipFile = createTemporaryZipFile(sampleDevice.getEsn());
-//        FileUtil.zipSingleFile(getSamplePayload(),temporaryZipFile);
-//        hdpServiceAPI.uploadDeviceHdpData(sampleDevice,temporaryZipFile);
-//        deleteAllTemporaryFiles();
+        prepareTestCaseData();
+        File temporaryZipFile = createTemporaryZipFile(sampleDevice.getEsn());
+        FileUtil.zipSingleFile(getSamplePayload(),temporaryZipFile);
+        hdpServiceAPI.uploadDeviceHdpData(sampleDevice,temporaryZipFile);
+        deleteAllTemporaryFiles();
     }
 
     @Expectation(key = "verifyDeviceHardwareChangeMessage", eventName = "hw-canonical-inbound")

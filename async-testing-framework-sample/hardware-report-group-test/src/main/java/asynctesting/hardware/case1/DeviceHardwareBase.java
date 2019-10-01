@@ -7,11 +7,8 @@ package asynctesting.hardware.case1;
 
 import com.absolute.qa.automation.core.exception.AutomationException;
 import com.absolute.qa.automation.mt.api.devicehardware.DeviceHardwareServiceApi;
-import com.absolute.qa.automation.mt.api.devicehardware.DeviceHardwareServiceTestCaseCommon;
-import com.absolute.qa.automation.mt.common.RestAssuredCommonProperties;
 import com.absolute.qa.automation.testmanagement.TestCaseBase;
 import com.absolute.qa.automation.testmanagement.TestManager;
-import com.absolute.qa.automation.testmanagement.testobjects.TestPlanDataHolder;
 import com.absolute.qa.automation.testmanagement.testobjects.UserAndDeviceInfo;
 import org.testng.TestException;
 import java.io.File;
@@ -23,23 +20,14 @@ import java.util.List;
 
 public abstract class DeviceHardwareBase extends TestCaseBase {
     protected DeviceHardwareServiceApi hdpServiceAPI;
-    protected DeviceHardwareServiceTestCaseCommon deviceHardwareServiceTestCaseCommon;
     private List<File> temporaryFiles = new ArrayList();
     private static final EnumMap<UserAndDeviceInfo.OsType, String> TEMPORARY_ZIP_FILE_PATHS = new EnumMap(UserAndDeviceInfo.OsType.class);
     private static final EnumMap<UserAndDeviceInfo.OsType, File> SAMPLE_PAYLOAD_FILES = new EnumMap(UserAndDeviceInfo.OsType.class);
     protected static final String RESOURCE_FOLDER_PATH = TestManager.testManagerProperties.getProperty("resourceFolderPath");
     protected UserAndDeviceInfo sampleDevice;
-    protected String cookie;
-    protected static TestPlanDataHolder testPlanData;
-    protected static RestAssuredCommonProperties commonProperties = RestAssuredCommonProperties.getInstance();
-    private static final String TEST_PLAN_FILE_NAME = "TestPlan_DDS_HDP_MT.xml";
 
     @Override
-    protected void prepareTestSuite() throws AutomationException {
-        testPlanData = TestPlanDataHolder.getInstance();
-        testPlanData.initializeTestData(new File[]{new File(testPlanFilePath)});
-        commonProperties.setSpecMap(testPlanData.getEnvironment());
-
+    protected void prepareTestSuite() {
         SAMPLE_PAYLOAD_FILES.put(UserAndDeviceInfo.OsType.Windows, new File(RESOURCE_FOLDER_PATH + "/data-files/hdp/windows/HDP_Windows.json"));
         TEMPORARY_ZIP_FILE_PATHS.put(UserAndDeviceInfo.OsType.Windows, RESOURCE_FOLDER_PATH + "/data-files/hdp/windows/HDP_%s.zip");
     }
@@ -51,15 +39,17 @@ public abstract class DeviceHardwareBase extends TestCaseBase {
     }
 
     protected void prepareTestCaseData() throws AutomationException {
-        super.executeBeforeClass();
+        //super.executeBeforeClass();
         hdpServiceAPI = DeviceHardwareServiceApi.getInstance();
-        cookie = hdpServiceAPI.getDefaultUserCookie();
-        sampleDevice = getSampleDeviceFromAccount(0, 0);
+        sampleDevice = getSampleDeviceFromAccount();
     }
 
-    protected UserAndDeviceInfo getSampleDeviceFromAccount(int accountIndex, int deviceIndex) {
-        List<UserAndDeviceInfo> accountDevices = deviceHardwareServiceTestCaseCommon.createListDevicesAndAccounts(testPlanData.getEnvironment().getAccountList().get(accountIndex));
-        UserAndDeviceInfo sampleDevice = deviceHardwareServiceTestCaseCommon.filterDevicesByOsType(accountDevices, getOSType()).get(deviceIndex);
+    protected UserAndDeviceInfo getSampleDeviceFromAccount() {
+        sampleDevice.setAccountUid("bd3273f2-f06f-40ec-bfbf-a9aa8eca51f8");
+        sampleDevice.setEsn("2C7JPS50T4AA1V010001");
+        sampleDevice.setDeviceUid("a4eb327f-7a22-4214-a10b-5659dc4651b9");
+        sampleDevice.setOsType(UserAndDeviceInfo.OsType.Windows);
+        sampleDevice.setAgentStatus(UserAndDeviceInfo.AgentStatus.Active);
         sampleDevice.setGenerateToken(false);
         return sampleDevice;
     }
@@ -83,11 +73,6 @@ public abstract class DeviceHardwareBase extends TestCaseBase {
 
     protected File getSamplePayload() {
         return SAMPLE_PAYLOAD_FILES.get(getOSType());
-    }
-
-    @Override
-    protected void setTestPlanFileName() {
-        this.testPlanFileName = TEST_PLAN_FILE_NAME;
     }
 
     protected abstract UserAndDeviceInfo.OsType getOSType();
