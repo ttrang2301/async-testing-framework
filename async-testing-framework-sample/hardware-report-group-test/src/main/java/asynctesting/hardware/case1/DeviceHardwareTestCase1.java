@@ -28,8 +28,6 @@ import ttrang2301.asynctesting.exception.IgnoredEventException;
 @AsyncTest(name = "DeviceHardware_Report_Group_Test_5")
 public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
 
-    private String payloadPath = "/data-files/hdp/windows/HDP_Windows.json";
-
     private UserAndDeviceInfo getDevice() {
         sampleDevice = new UserAndDeviceInfo();
         sampleDevice.setAccountUid("afdf6dbb-cf70-4739-889e-1802f962cfdf");
@@ -39,6 +37,11 @@ public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
         sampleDevice.setAgentStatus(UserAndDeviceInfo.AgentStatus.Active);
         sampleDevice.setGenerateToken(false);
         return sampleDevice;
+    }
+
+    @Override
+    protected String getPayloadPath() {
+        return "/data-files/hdp/windows/HDP_Windows.json";
     }
 
     @Precondition
@@ -80,11 +83,6 @@ public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
         JsonParser jsonParser = new JsonParser();
         JsonElement jsonElement = jsonParser.parse((new ObjectMapper()).writeValueAsString(event));
         return gson.toJson(jsonElement);
-    }
-
-    @Override
-    protected String getPayloadPath() {
-        return payloadPath;
     }
 
     @Data
