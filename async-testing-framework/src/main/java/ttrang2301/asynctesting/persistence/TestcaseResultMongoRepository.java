@@ -3,19 +3,29 @@ package ttrang2301.asynctesting.persistence;
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
 import com.mongodb.MongoCredential;
-import com.mongodb.client.*;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoCursor;
+import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
 import com.mongodb.client.model.UpdateOptions;
 import com.mongodb.client.result.UpdateResult;
-import lombok.extern.slf4j.Slf4j;
+
 import org.bson.Document;
 import org.bson.codecs.configuration.CodecRegistries;
 import org.bson.codecs.configuration.CodecRegistry;
 import org.bson.codecs.pojo.PojoCodecProvider;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+
+import lombok.extern.slf4j.Slf4j;
 
 import static org.bson.codecs.configuration.CodecRegistries.fromCodecs;
 import static org.bson.codecs.configuration.CodecRegistries.fromProviders;
@@ -86,8 +96,8 @@ public class TestcaseResultMongoRepository implements TestcaseResultRepository {
         );
         if (updateResult.getModifiedCount() != 1) {
             // TODO Handle update unexpected result
-            log.error("Trying to update status of expectation {}.{}.{} to {}. Expect modified count is 1 but encounter {}",
-                    campaignId, testcaseId, expectationKey, status, updateResult.getModifiedCount());
+//            log.error("Trying to update status of expectation {}.{}.{} to {}. Expect modified count is 1 but encounter {}",
+//                    campaignId, testcaseId, expectationKey, status, updateResult.getModifiedCount());
         }
     }
 

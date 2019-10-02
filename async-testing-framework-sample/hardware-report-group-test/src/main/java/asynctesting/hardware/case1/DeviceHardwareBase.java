@@ -85,7 +85,7 @@ public abstract class DeviceHardwareBase extends TestCaseBase {
                                               String endpointUrl, Map<String, String> headers, int statusCode)
     {
 
-        String deviceToken = "ovRkrY+XTM8Ea5gzKINDUA==.WMgByR/ZFra40dXDB8kmREUc5l+x8S1+aJ+33ibqyN+LUAdEopRDZE8MnuaPliQDysoQ71G9+d/soEuumac5VRIUNS26/7qD9s27ypgVPhXgWaIWNblybCCUyHxpmuvwEOM3vjOBNCynKjtNl+grvZko7MoSNTjZcGyhs7z/venYCD0X4im2NNIcbIWIlZsflze4GYRXfSPyrE0WwEPtLsBtmqLAe/bZ1MDDisRnOqL8wpdWVBX/nFF89DxOqROEfBHT6+aLeRCF4t+spn88Zw==.pERJHaEe0lLsPBvBtOaZWUG2ZPI=";
+        String deviceToken = "VJYH2+Rd5+RZA7HSDpMwwA==.1sFgn9QZpxODlwYQX7Vm6cdK2H2EU9rEwIu8BFfv341sGZmqzoLN4YGsTU/4/bX7B4Etyt65HugcnlUXAqHZmgSxow881cwzSmjoCWSfAbIjYXlB30dBJBVZgcUjcDA04fd1SgL7p6BTZt2+keOGGUMWbk3FGdATjt3mt12qhNulhROP0vSkltmAwOZUmc4IZpho7hhqsFnkFHnW0r2sfi3J6mefGqtYsuzd48xgBLfnTYV4j2bilQ7woVfvLg6ICazFAkMD9uFKyuEodskDSA==.OYwwf1png2RQ6+nU63nuNiwx3x8=";
 
         RequestSpecification spec = new RequestSpecBuilder()
                 .setContentType(ContentType.JSON)
