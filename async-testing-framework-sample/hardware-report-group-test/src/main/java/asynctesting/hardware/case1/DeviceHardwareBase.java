@@ -6,6 +6,7 @@
 package asynctesting.hardware.case1;
 
 import com.absolute.qa.automation.core.exception.AutomationException;
+import com.absolute.qa.automation.core.utils.FileUtil;
 import com.absolute.qa.automation.testmanagement.TestCaseBase;
 import com.absolute.qa.automation.testmanagement.TestManager;
 import com.absolute.qa.automation.testmanagement.testobjects.UserAndDeviceInfo;
@@ -34,7 +35,7 @@ public abstract class DeviceHardwareBase extends TestCaseBase {
     private List<File> temporaryFiles = new ArrayList<>();
     private static final EnumMap<UserAndDeviceInfo.OsType, String> TEMPORARY_ZIP_FILE_PATHS = new EnumMap(UserAndDeviceInfo.OsType.class);
     protected static final String RESOURCE_FOLDER_PATH = TestManager.testManagerProperties.getProperty("resourceFolderPath");
-    private static final File SAMPLE_PAYLOAD_FILES = new File(RESOURCE_FOLDER_PATH + "/data-files/hdp/windows/HDP_Windows.json");
+    private final File samplePayloadFile = new File(RESOURCE_FOLDER_PATH + getPayloadPath());
     protected static UserAndDeviceInfo sampleDevice;
 
     private static final String NG_DEVICE_OS_HEADER = "X-NG-device-os";
@@ -46,13 +47,23 @@ public abstract class DeviceHardwareBase extends TestCaseBase {
         TEMPORARY_ZIP_FILE_PATHS.put(UserAndDeviceInfo.OsType.Windows, RESOURCE_FOLDER_PATH + "/data-files/hdp/windows/HDP_%s.zip");
     }
 
-    protected File createTemporaryZipFile(String esn) {
+    protected abstract String getPayloadPath();
+
+
+    protected void uploadPayload(UserAndDeviceInfo sampleDevice) throws AutomationException {
+        File temporaryZipFile = createTemporaryZipFile(sampleDevice.getEsn());
+        FileUtil.zipSingleFile(getSamplePayload(),temporaryZipFile);
+        uploadDeviceHdpData(sampleDevice,temporaryZipFile);
+        deleteAllTemporaryFiles();
+    }
+
+    private File createTemporaryZipFile(String esn) {
         File result = new File(String.format(TEMPORARY_ZIP_FILE_PATHS.get(UserAndDeviceInfo.OsType.Windows), esn));
         temporaryFiles.add(result);
         return result;
     }
 
-    protected void deleteAllTemporaryFiles() {
+    private void deleteAllTemporaryFiles() {
         for (File temporaryFile : temporaryFiles) {
             deleteFileIfExist(temporaryFile);
         }
@@ -69,8 +80,8 @@ public abstract class DeviceHardwareBase extends TestCaseBase {
         }
     }
 
-    protected File getSamplePayload() {
-        return SAMPLE_PAYLOAD_FILES;
+    private File getSamplePayload() {
+        return samplePayloadFile;
     }
 
     public void uploadDeviceHdpData(final UserAndDeviceInfo deviceInfo, File file) throws AutomationException {

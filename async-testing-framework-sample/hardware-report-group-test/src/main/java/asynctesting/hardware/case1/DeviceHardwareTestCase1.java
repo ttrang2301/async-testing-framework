@@ -28,6 +28,8 @@ import ttrang2301.asynctesting.exception.IgnoredEventException;
 @AsyncTest(name = "DeviceHardware_Report_Group_Test_5")
 public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
 
+    private String payloadPath = "/data-files/hdp/windows/HDP_Windows.json";
+
     private UserAndDeviceInfo getDevice() {
         sampleDevice = new UserAndDeviceInfo();
         sampleDevice.setAccountUid("afdf6dbb-cf70-4739-889e-1802f962cfdf");
@@ -43,10 +45,8 @@ public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
     public void prepareCondition() throws AutomationException {
         log.info("DEMO_HACKATHON: Enter @Precondition prepareCondition method.");
         sampleDevice = getDevice();
-        File temporaryZipFile = createTemporaryZipFile(sampleDevice.getEsn());
-        FileUtil.zipSingleFile(getSamplePayload(),temporaryZipFile);
-        uploadDeviceHdpData(sampleDevice,temporaryZipFile);
-        deleteAllTemporaryFiles();
+        uploadPayload(sampleDevice);
+
     }
 
     @Expectation(key = "verifyDeviceHardwareChangeMessage", eventName = "hw-canonical-inbound")
@@ -80,6 +80,11 @@ public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
         JsonParser jsonParser = new JsonParser();
         JsonElement jsonElement = jsonParser.parse((new ObjectMapper()).writeValueAsString(event));
         return gson.toJson(jsonElement);
+    }
+
+    @Override
+    protected String getPayloadPath() {
+        return payloadPath;
     }
 
     @Data
