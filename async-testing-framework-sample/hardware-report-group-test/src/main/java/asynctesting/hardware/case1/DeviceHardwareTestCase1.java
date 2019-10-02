@@ -17,7 +17,7 @@ import ttrang2301.asynctesting.annotation.Precondition;
 import ttrang2301.asynctesting.exception.IgnoredEventException;
 
 @Slf4j
-@AsyncTest(name = "DeviceHardware_Report_Group_Test_5")
+@AsyncTest(name = "DeviceHardware_Report_Group_Test_217")
 public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
 
     private UserAndDeviceInfo getDevice() {
@@ -38,13 +38,14 @@ public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
 
     @Precondition
     public void prepareCondition() throws AutomationException {
-        log.info("DEMO_HACKATHON: Enter @Precondition prepareCondition method.");
         sampleDevice = getDevice();
+        log.info("DEMO_HACKATHON: Enter @Precondition prepareCondition method." + "\n" +
+                "Starting to send payload for deviceUid: " + sampleDevice.getDeviceUid());
         uploadPayload(sampleDevice);
 
     }
 
-    @Expectation(key = "verifyDeviceHardwareChangeMessage", eventName = "hw-canonical-inbound")
+    @Expectation(key = "verify.DeviceHardwareChangeMessage", eventName = "hw-canonical-inbound")
     public void assertDeviceHardwareMessageOut(DeviceHardwareChangeDTO event) throws JsonProcessingException {
         if (!event.getCurrentDeviceHardware().getDeviceUid().equals(sampleDevice.getDeviceUid())) {
             throw new IgnoredEventException();
@@ -54,9 +55,10 @@ public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
                 "Listening from 'hw-canonical-inbound' topic. " + "\n" +
                 "Value of DeviceHardwareChangeDTO argument: " + "\n" +
                 toPrettyJson(event));
+        // do additional assert logic here
     }
 
-    @Expectation(key = "verifyDeviceReportChangeMessage", eventName = "dg-hwreportdatachanged-inbound")
+    @Expectation(key = "verify.DeviceReportChangeMessage", eventName = "dg-hwreportdatachanged-inbound")
     public void assertDeviceReportMessageOut(ReportDataChangedDTO event) throws JsonProcessingException {
         if (!event.getCurrentDeviceHardware().getDeviceUid().equals(sampleDevice.getDeviceUid())) {
             throw new IgnoredEventException();
@@ -65,10 +67,23 @@ public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
                 "Listening from 'dg-hwreportdatachanged-inbound' topic. " + "\n" +
                 "Value of ReportDataChangedDTO argument: " + "\n" +
                 toPrettyJson(event));
-
+        // do additional assert logic here
     }
 
 
+    @Expectation(key = "verify.DeviceGroupChangeMessage", eventName = "dg-groupschanged-inbound")
+    public void assertDeviceGrouptMessageOut(DeviceGroupChangedDTO event) throws JsonProcessingException {
+        if (!event.getDeviceId().equals(sampleDevice.getDeviceUid())) {
+            throw new IgnoredEventException();
+        }
+        log.info("DEMO_HACKATHON: Enter @Expectation method. " + "\n" +
+                "Listening from 'dg-groupschanged-inbound' topic. " + "\n" +
+                "Value of DeviceGroupChangedDTO argument: " + "\n" +
+                toPrettyJson(event));
+
+        // smart group that device-name contains 'hackathon': 74c8c688-f552-4a6e-b359-27f4a112f516
+        // do additional assert logic here
+    }
 
     @Data
     @AllArgsConstructor
@@ -108,6 +123,16 @@ public class DeviceHardwareTestCase1 extends DeviceHardwareBase {
         private String accountId;
         private List<String> changedProperties;
         private DeviceHardwareDTO currentDeviceHardware;
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static final class DeviceGroupChangedDTO {
+        private String deviceId;
+        private String accountId;
+        private List<String> groupIds;
     }
 }
 
