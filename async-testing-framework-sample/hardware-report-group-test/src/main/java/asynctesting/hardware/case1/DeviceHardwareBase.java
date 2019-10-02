@@ -5,11 +5,18 @@
  */
 package asynctesting.hardware.case1;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParser;
+
 import com.absolute.qa.automation.core.exception.AutomationException;
 import com.absolute.qa.automation.core.utils.FileUtil;
 import com.absolute.qa.automation.testmanagement.TestCaseBase;
 import com.absolute.qa.automation.testmanagement.TestManager;
 import com.absolute.qa.automation.testmanagement.testobjects.UserAndDeviceInfo;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.apache.http.HttpStatus;
 import org.testng.TestException;
@@ -126,5 +133,12 @@ public abstract class DeviceHardwareBase extends TestCaseBase {
         }
 
         return requestSpecification;
+    }
+
+    protected String toPrettyJson(Object event) throws JsonProcessingException {
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+        JsonParser jsonParser = new JsonParser();
+        JsonElement jsonElement = jsonParser.parse((new ObjectMapper()).writeValueAsString(event));
+        return gson.toJson(jsonElement);
     }
 }
