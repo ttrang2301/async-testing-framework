@@ -1,4 +1,4 @@
-package ttrang2301.asynctesting;
+package ttrang2301.asynctesting.preconditions;
 
 import org.apache.commons.collections.CollectionUtils;
 import ttrang2301.asynctesting.persistence.TestcaseResultRepository;

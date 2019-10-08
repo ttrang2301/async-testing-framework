@@ -3,7 +3,7 @@
  * transmission in whole or in part, in any form or by any means, electronic, mechanical or
  * otherwise, is prohibited without the prior written consent of the copyright owner.
  */
-package ttrang2301.asynctesting;
+package ttrang2301.asynctesting.expectations;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,7 @@ public class ActiveMqEventConsumer implements Runnable {
 
     private TestcaseResultRepository testcaseResultRepository;
 
-    protected ActiveMqEventConsumer(String connectionUrl, String topicName,
+    public ActiveMqEventConsumer(String connectionUrl, String topicName,
                                     Campaign campaign,
                                     List<Expectation> expectations,
                                     TestcaseResultRepository testcaseResultRepository) {

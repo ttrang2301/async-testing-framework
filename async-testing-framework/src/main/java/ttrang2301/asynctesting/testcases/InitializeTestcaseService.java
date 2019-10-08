@@ -1,4 +1,4 @@
-package ttrang2301.asynctesting;
+package ttrang2301.asynctesting.testcases;
 
 import ttrang2301.asynctesting.persistence.TestcaseResultRepository;
 import ttrang2301.asynctesting.testcases.TestcaseResult;
